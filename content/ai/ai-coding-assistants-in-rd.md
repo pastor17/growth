@@ -10,7 +10,7 @@ author: "diunilaomei"
 coverEmoji: "💻"
 ---
 
-> 本文是「AI 专题 · 垂直行业剖析」的一篇，聚焦**软件研发行业自身**的 AI 落地——这也是 2026 年最热的议题之一：AI 编程助手不再是「要不要用」，而是「怎么用、怎么管」。
+软件研发，大概是 AI 落地最快、也最先「卷自己」的行业——工具直接长在开发者每天的工作里，2026 年的问题已经不是「要不要用」，而是「怎么用、怎么管」。这篇就写我自己带团队引入时的观察和方法。
 
 ## 先看数据：采用率已经很高，信任是另一回事
 
@@ -77,19 +77,6 @@ coverEmoji: "💻"
 | 读代码 / 解释 / 原型探索 | 强审计、强合规场景的产物 |
 | 老代码现代化改造 | 你自己都讲不清需求的代码 |
 
-## 落地清单
+最后说句可能不太讨喜的话：AI 编程工具这件事，团队里八成价值来自「先别乱」——规则、度量、CR 守住了，收益自然会来；守不住，工具只会把混乱放大。
 
-- [ ] 试点前采集基线指标（PR 周期 / 缺陷率 / 覆盖率）
-- [ ] 明确允许与禁止喂给 AI 的代码清单
-- [ ] 生成代码 100% 走人工 CR
-- [ ] 用数据（含缺陷回流率）写 ADR 决定推广或收缩
-- [ ] 接入安全扫描与成本告警
-- [ ] 沉淀团队提示词资产与规范文档
-
-## 参考来源
-
-- [Stack Overflow Developer Survey（官方）](https://survey.stackoverflow.co/)
-- [SO Survey 2025 · AI 章节](https://survey.stackoverflow.co/2025/ai)（84% / 51% 数据出处）
-- [SO Survey 2026 解读：AI at 84%, Trust 缺口](https://byteiota.com/stack-overflow-dev-survey-2026-ai-at-84-trust-at-3/)
-- [2026 AI 编程助手对比：Cursor / Claude Code / Copilot 等（行业文章，供工具定位参考）](https://aibsz.com/2026/08/18/2026-ai-coding-assistants-comparison-cursor-claude-copilot-windsurf/)
-- 更多真实工具选型与踩坑见 [🧰 工具与工作流（AI 工程工具）](../../tools/)
+工具层面的对比和踩坑，我放在[工具栏目](../../tools/)里慢慢写。

@@ -28,7 +28,7 @@
   <div class="container">
     <div class="section__head">
       <h2 class="section__title">内容栏目</h2>
-      <span class="section__more">六块内容，三类身份互相赋能</span>
+      <span class="section__more">每个栏目都是踩过坑才写出来的，挑你关心的看</span>
     </div>
     <div class="column-grid">
       {{- range where site.Data.columns "id" "not in" (slice "about" "resources") -}}
@@ -80,7 +80,7 @@
       <h2 class="section__title">工具 & 工作流</h2>
       <a class="section__more" href="{{ "tools/" | relURL }}">工具总览 →</a>
     </div>
-    <p class="section__lead">不只给链接：每个工具都讲清 <strong>什么场景用、什么场景不要用、坑点与替代方案</strong>。只收录亲身实战过的工具，宁缺毋滥。</p>
+    <p class="section__lead">不只给链接：每个工具都讲清 <strong>什么场景用、什么场景不要用、坑点与替代方案</strong>。只写自己真用过的，没用过的不收录。</p>
     <div class="cat-grid">
       {{- range site.Data.tools -}}
         <a class="cat-card" href="{{ "tools/" | relURL }}#{{ .id }}" style="--cat-color: {{ "#0e7c66" }}">
@@ -100,7 +100,7 @@
       <h2 class="section__title">成长体系</h2>
       <a class="section__more" href="{{ "growth/" | relURL }}">总目录 →</a>
     </div>
-    <p class="section__lead">体系化课程式文章集：<strong>工程技术教程 · 软技能 · 个人成长 · 职业路径规划</strong>，有目录、有递进、有清单，拒绝零散鸡汤。</p>
+    <p class="section__lead">四个方向的系列文章：<strong>工程技术教程 · 软技能 · 个人成长 · 职业路径规划</strong>，每个系列有阅读顺序和章节目录，顺着读就行。</p>
     <div class="series-grid">
       {{- range site.Data.series -}}
         <a class="series-card" href="{{ "growth/" | relURL }}#{{ .id }}" style="--series-color: {{ .color }}">

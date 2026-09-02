@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "⚖️"
 ---
 
-> 系列说明：这是《后端架构落地教程》第 1 章。选型决定架构的下限——很多系统后期痛苦，都是选型时埋的雷。
-
 ## 先把话说清楚：选型没有最优解
 
 网上大量选型文章是「A vs B 优缺点清单」，看完了还是不知道选什么。原因是**脱离业务约束的优缺点没有意义**：MySQL 的「缺点」在没有写库压力的场景里根本不是缺点。
@@ -77,4 +75,4 @@ ADR 的价值在三个月后：新同学问「为什么不用 X？」时，你�
 - [ ] 提前写清 POC 通过标准
 - [ ] 决策后 20 分钟内写 ADR
 
-相关资源：[📥 架构评审清单](../../templates/architecture-review-checklist.md) ｜ [📥 技术方案文档模板](../../templates/tech-design-template.md) ｜ 下章预告：业务架构拆解。
+延伸阅读：[架构评审清单](../../templates/architecture-review-checklist.md)  ·  [技术方案文档模板](../../templates/tech-design-template.md)  ·  下章预告：业务架构拆解。

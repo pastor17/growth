@@ -18,7 +18,7 @@ disableHugoGeneratorInject = true
 [params]
   # 一句话定位 slogan（出现在首页首屏与站点副标题）
   subtitle = '专注大规模系统架构 · 互联网连续创业者 · 技术人职业生涯顾问'
-  description = '分享真实踩坑、架构实战、创业思考与 AI 落地，只输出可复用经验，不贩卖焦虑。'
+  description = '记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。'
   author = 'diunilaomei'            # 文章署名，可改成你的名字 / ID
   siteName = '架构 · 创业 · 成长'
   copyright = '© 2016-2026 记忆研究'

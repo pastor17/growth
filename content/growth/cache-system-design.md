@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "🗄️"
 ---
 
-> 系列说明：《后端架构落地教程》第 3 章。本章与故障案例[❄️ 一次缓存雪崩的完整复盘](../../architecture/cache-avalanche-postmortem/)互为印证——先读故障再读设计，效果最好。
-
 ## 先把结论放前面：缓存是放大器，不是保险
 
 缓存放大的是「读性能」，也放大「不一致与故障」：命中的 1000 QPS 很爽，失效瞬间回源 1000 QPS 可能直接打垮数据库。所以设计缓存体系的第一原则是：**先想清楚失效与回源，再想命中率**。
@@ -71,4 +69,4 @@ coverEmoji: "🗄️"
 - [ ] 写路径 Cache Aside，删除失败有重试
 - [ ] 缓存命中率、回源 QPS、单 key 并发监控告警
 
-相关：[上章 · 业务架构拆解](business-architecture-breakdown/) ｜ [❄️ 缓存雪崩故障复盘](../../architecture/cache-avalanche-postmortem/) ｜ [🧰 Redis 工具行](../../tools/)
+延伸阅读：[上章 · 业务架构拆解](business-architecture-breakdown/)  ·  [缓存雪崩故障复盘](../../architecture/cache-avalanche-postmortem/)  ·  [Redis 工具行](../../tools/)

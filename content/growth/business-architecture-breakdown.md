@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "🧩"
 ---
 
-> 系列说明：《后端架构落地教程》第 2 章。承接第 1 章[技术选型方法论](tech-selection-methodology/)——选型决定下限，而拆解决定上限：**拆错了，后面所有层都在给错误的边界打补丁**。
-
 ## 为什么多数「架构方案」拆解是错的
 
 评审时最常见的失败模式：需求一句话，方案三页架构图——微服务、消息队列、缓存全套上。问「这个模块解决哪个业务问题？」答不上来。
@@ -68,4 +66,4 @@ coverEmoji: "🧩"
 - [ ] 模块按「变化频率」划分，数据有唯一 owner
 - [ ] 拆解产出物进技术方案，再进评审
 
-相关：[上章 · 技术选型方法论](tech-selection-methodology/) ｜ 下章 · 缓存体系设计实战 ｜ [📥 技术方案文档模板](../../templates/tech-design-template.md)
+延伸阅读：[上章 · 技术选型方法论](tech-selection-methodology/)  ·  下章 · 缓存体系设计实战  ·  [技术方案文档模板](../../templates/tech-design-template.md)

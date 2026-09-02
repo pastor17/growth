@@ -61,10 +61,6 @@ coverEmoji: "🚫"
 - **识别信号**：评审结论永远「通过」，从没有过「有条件通过」。
 - **出路**：评审前用清单自查（[架构评审清单](../../templates/architecture-review-checklist.md)），评审只看「决策与取舍」，不看代码细节。
 
-## 落地清单
+反模式这东西，最怕的不是没见过，是「见过了却没拿来对照自己」。上面 7 条我基本是按「学费最贵」排的——微服务全家桶和告警疲劳，我都在真实项目里交过钱。评审前把这张单子过一遍，能省下的远不止一次重构。
 
-- [ ] 用 7 条反模式对照你的系统，标出命中项
-- [ ] 命中的反模式排优先级：先处理「正在付税」的，不是「听着吓人」的
-- [ ] 把本文清单并入你的评审清单
-
-相关：[⚖️ 技术选型方法论](../../growth/tech-selection-methodology/) ｜ [❄️ 缓存雪崩复盘](cache-avalanche-postmortem/) ｜ [📥 架构评审清单](../../templates/architecture-review-checklist.md)
+评审清单模板在这里：[架构评审清单](../../templates/architecture-review-checklist.md)。

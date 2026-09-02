@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "🔄"
 ---
 
-> 系列说明：《个人成长 & 思维认知系列》第 3 章。本文是方法论，配套模板见 [📥 个人月度复盘模板](../../templates/monthly-review-template.md)，可直接下载使用。
-
 ## 为什么多数人「复盘了也没用」
 
 复盘最大的误区是写成**工作总结**：流水账式罗列「本月做了什么」，结尾一句「下月继续努力」。它没有反馈回路，自然没有成长。
@@ -54,4 +52,4 @@ coverEmoji: "🔄"
 - [ ] 项目结束 48 小时内做项目复盘（趁记忆热）
 - [ ] 每条教训沉淀成可调用的一条决策记录
 
-相关：[🌳 工程师知识体系搭建](knowledge-system/) ｜ [📥 个人月度复盘模板](../../templates/monthly-review-template.md) ｜ [🧭 职业路径规划系列](career-path-map/)
+延伸阅读：[工程师知识体系搭建](knowledge-system/)  ·  [个人月度复盘模板](../../templates/monthly-review-template.md)  ·  [职业路径规划系列](career-path-map/)

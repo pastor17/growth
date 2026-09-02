@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "📝"
 ---
 
-> 系列说明：这是《技术人软技能系列》第 1 章。技术方案、汇报、沟通这些软能力，是普通工程师与架构师的分水岭。
-
 ## 技术方案的两种失败
 
 我评审过大量技术方案，失败的无外乎两种：
@@ -71,4 +69,4 @@ coverEmoji: "📝"
 - [ ] 架构图自己画
 - [ ] 给「只看摘要的人」也能做决定
 
-相关资源：[📥 技术方案文档模板](../../templates/tech-design-template.md) ｜ [📥 架构评审清单](../../templates/architecture-review-checklist.md)
+延伸阅读：[技术方案文档模板](../../templates/tech-design-template.md)  ·  [架构评审清单](../../templates/architecture-review-checklist.md)

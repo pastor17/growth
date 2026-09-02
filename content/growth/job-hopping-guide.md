@@ -12,8 +12,6 @@ author: "diunilaomei"
 coverEmoji: "🧭"
 ---
 
-> 系列说明：《职业路径规划系列》第 2 章，承接[技术人成长路径全景](career-path-map/)。配套模板见 [📥 简历梳理模板](../../templates/resume-review-template.md)。
-
 ## 先想清楚：你为什么跳？（三种动机，三种做法）
 
 跳槽前先做动机体检，**动机决定你该跳去哪，而不是该不该跳**：
@@ -69,4 +67,4 @@ coverEmoji: "🧭"
 - [ ] 谈薪资：算总包、敢开价、留退路
 - [ ] offer 评估：按上表逐项打分后再签
 
-相关：[🧭 技术人成长路径全景](career-path-map/) ｜ [📥 简历梳理模板](../../templates/resume-review-template.md) ｜ 晋升与转型见系列后续章节
+延伸阅读：[技术人成长路径全景](career-path-map/)  ·  [简历梳理模板](../../templates/resume-review-template.md)  ·  晋升与转型见系列后续章节

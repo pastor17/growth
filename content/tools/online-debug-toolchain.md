@@ -59,13 +59,6 @@ OpenTelemetry + Jaeger/Tempo，把一次请求的每一跳（网关 → 服务 A
 2. 一切动作留痕（命令、变更、时间点），复盘才有材料。
 3. 复盘输出改进项，绑定到人，下个迭代必须闭环。
 
-## 落地清单
+工具就这么多，真正难的是流程——发现、止血、定位、复现，每一步都要有纪律。我在[另一篇复盘](../../architecture/cache-avalanche-postmortem/)里写过一次完整的实战过程，那篇比这篇更能说明问题。
 
-- [ ] 告警收敛到 ≤10 条，每条有预案
-- [ ] 业务指标告警优先于资源指标
-- [ ] 全链路透传 trace_id
-- [ ] 日志统一采集，可跨实例检索
-- [ ] 链路追踪采样策略明确
-- [ ] 修复前必复现、修复后必验证
-
-相关资源：[📥 故障复盘模板](../../templates/postmortem-template.md) ｜ 故障案例见 [❄️ 一次缓存雪崩的完整复盘](../../architecture/cache-avalanche-postmortem/)
+事故之后的复盘模板：[故障复盘模板](../../templates/postmortem-template.md)。
