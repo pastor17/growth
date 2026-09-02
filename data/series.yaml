@@ -119,7 +119,7 @@
   color: "#b8772f"
   audience: "所有阶段的工程师"
   prerequisite: "无，随时可读"
-  description: "讲工程师的长期自我成长：知识体系、学习方法、复盘、精力与个人品牌。拒绝鸡汤，只给现实方法。"
+  description: "长期做技术绕不开的基本功：知识体系、学习方法、复盘、精力与个人品牌。写具体的做法，不灌道理。"
   chapters:
     - slug: "knowledge-system"
       title: "工程师知识体系搭建：建立自己的知识树"
@@ -154,7 +154,7 @@
   color: "#c0392b"
   audience: "程序员、技术管理者"
   prerequisite: "无，越早读越好"
-  description: "导师核心输出：多路径对比，讲清每个阶段的核心能力、瓶颈与选择代价，不贩卖焦虑。"
+  description: "成长路径、跳槽、晋升、转型——把每条路的代价和适合谁讲清楚，决定你自己做。"
   chapters:
     - slug: "career-path-map"
       title: "技术人成长路径全景：阶段能力、瓶颈与考核"
