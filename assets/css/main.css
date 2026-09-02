@@ -438,3 +438,12 @@ a.contact-card:hover { border-color: var(--primary); text-decoration: none; }
 .code-wrap:hover .code-copy { opacity: 1; }
 .code-copy:hover { background: rgba(255,255,255,0.16); color: #fff; }
 .code-copy.is-copied { background: #0e7c66; color: #fff; border-color: #0e7c66; opacity: 1; }
+
+.resource-card__actions { display: flex; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
+.resource-card__action { font-size: 0.88rem; font-weight: 700; color: var(--primary-dark); }
+.resource-card__action--dl { color: var(--muted); font-weight: 600; }
+.resource-card__action--dl:hover { color: var(--primary-dark); }
+.template-toolbar { max-width: var(--reading-width); margin: 8px auto 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.template-toolbar__hint { color: var(--muted); font-size: 0.88rem; }
+.template-body { margin-top: 0; }
+.template-page { padding-bottom: 64px; }

@@ -1,0 +1,8 @@
+{{ define "main" }}
+{{- /* /templates/ 本身不提供列表，重定向到资源下载页 */ -}}
+<meta http-equiv="refresh" content="0; url={{ "resources/" | relURL }}">
+<script>location.replace("{{ "resources/" | relURL }}");</script>
+<div class="container notfound">
+  <p>模板清单已移至<a href="{{ "resources/" | relURL }}">资源下载</a>页。</p>
+</div>
+{{ end }}

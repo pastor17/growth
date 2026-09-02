@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{- $all := site.RegularPages -}}
+{{- $all := where site.RegularPages "Section" "ne" "templates" -}}
 {{- $featured := where $all "Params.featured" true -}}
 {{- $latest := first 6 ($all.ByDate.Reverse) -}}
 {{- $toolCount := 0 -}}
@@ -123,7 +123,7 @@
     </div>
     <div class="resource-pills">
       {{- range site.Data.templates -}}
-        <a class="resource-pill" href="{{ printf "templates/%s" .file | relURL }}">📄 {{ .name }}</a>
+        <a class="resource-pill" href="{{ printf "templates/%s/" (strings.TrimSuffix ".md" .file) | relURL }}">{{ .name }}</a>
       {{- end -}}
     </div>
   </div>

@@ -69,4 +69,4 @@ coverEmoji: "📝"
 - [ ] 架构图自己画
 - [ ] 给「只看摘要的人」也能做决定
 
-延伸阅读：[技术方案文档模板](../../templates/tech-design-template.md)  ·  [架构评审清单](../../templates/architecture-review-checklist.md)
+延伸阅读：[技术方案文档模板](/templates/tech-design-template/)  ·  [架构评审清单](/templates/architecture-review-checklist/)

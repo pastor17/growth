@@ -50,7 +50,7 @@ coverEmoji: "🧩"
 - 数据归属：每个数据实体有唯一 owner；跨模块数据通过接口而非共享表
 - 先出模块划分与数据流，**再决定要不要微服务**（见第 1 章：规模不到，微服务是负债）
 
-> 产出物：模块图（含依赖方向）+ 核心数据实体清单。此时才进入技术方案写作（模板见[文末链接](../../templates/tech-design-template.md)）。
+> 产出物：模块图（含依赖方向）+ 核心数据实体清单。此时才进入技术方案写作（模板见[文末链接](/templates/tech-design-template/)）。
 
 ## 我踩过的坑
 
@@ -66,4 +66,4 @@ coverEmoji: "🧩"
 - [ ] 模块按「变化频率」划分，数据有唯一 owner
 - [ ] 拆解产出物进技术方案，再进评审
 
-延伸阅读：[上章 · 技术选型方法论](tech-selection-methodology/)  ·  下章 · 缓存体系设计实战  ·  [技术方案文档模板](../../templates/tech-design-template.md)
+延伸阅读：[上章 · 技术选型方法论](/growth/tech-selection-methodology/)  ·  下章 · 缓存体系设计实战  ·  [技术方案文档模板](/templates/tech-design-template/)

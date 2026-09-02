@@ -25,7 +25,7 @@
       <div class="site-footer__col">
         <h3>资源下载</h3>
         {{- range site.Data.templates -}}
-          <a href="{{ printf "templates/%s" .file | relURL }}">📄 {{ .name }}</a>
+          <a href="{{ printf "templates/%s/" (strings.TrimSuffix ".md" .file) | relURL }}">{{ .name }}</a>
         {{- end -}}
       </div>
     </div>

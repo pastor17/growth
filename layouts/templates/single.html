@@ -1,0 +1,33 @@
+{{ define "main" }}
+{{- $file := .Params.templateFile | default "" -}}
+{{- $raw := "" -}}
+{{- with $file -}}
+  {{- $raw = readFile (printf "static/templates/%s" .) -}}
+{{- end -}}
+<div class="container page-head column-head" style="--col-color: #7a5c3e">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span>
+    <a href="{{ "resources/" | relURL }}">资源下载</a><span>/</span>
+    <span>{{ .Title }}</span>
+  </nav>
+  <h1 class="page-title">📄 {{ .Title }}</h1>
+  {{- with .Description -}}<p class="page-subtitle">{{ . }}</p>{{- end -}}
+</div>
+
+<div class="container template-page">
+  <div class="template-toolbar">
+    <span class="template-toolbar__hint">把内容复制到自己文档里用，按你的场景增删条目即可。</span>
+    {{- with $file -}}
+    <a class="btn btn--primary" href="{{ printf "templates/%s" . | relURL }}">⬇ 下载原始 Markdown</a>
+    {{- end -}}
+  </div>
+
+  {{- with $raw -}}
+  <div class="article-content template-body" id="articleBody">
+    {{ . | markdownify }}
+  </div>
+  {{- else -}}
+  <p class="empty">模板内容未找到。</p>
+  {{- end -}}
+</div>
+{{ end }}

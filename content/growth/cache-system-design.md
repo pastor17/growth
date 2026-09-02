@@ -37,7 +37,7 @@ coverEmoji: "🗄️"
 
 ## 失效策略：TTL 的三个设计点
 
-1. **TTL 加随机抖动**（基础值 ±20%）：从源头避免「同生同死」的批量失效（雪崩的直接诱因，见[故障复盘](../../architecture/cache-avalanche-postmortem/)）。
+1. **TTL 加随机抖动**（基础值 ±20%）：从源头避免「同生同死」的批量失效（雪崩的直接诱因，见[故障复盘](/architecture/cache-avalanche-postmortem/)）。
 2. **热点 key 逻辑过期**：不设物理 TTL，由后台任务主动刷新，读到旧值也不回源（数据允许秒级陈旧时）。
 3. **DB 变更主动失效**：写路径删缓存（Cache Aside），而不是更新缓存——避免并发写造成的中间态写脏。
 
@@ -69,4 +69,4 @@ coverEmoji: "🗄️"
 - [ ] 写路径 Cache Aside，删除失败有重试
 - [ ] 缓存命中率、回源 QPS、单 key 并发监控告警
 
-延伸阅读：[上章 · 业务架构拆解](business-architecture-breakdown/)  ·  [缓存雪崩故障复盘](../../architecture/cache-avalanche-postmortem/)  ·  [Redis 工具行](../../tools/)
+延伸阅读：[上章 · 业务架构拆解](/growth/business-architecture-breakdown/)  ·  [缓存雪崩故障复盘](/architecture/cache-avalanche-postmortem/)  ·  [Redis 工具行](/tools/)

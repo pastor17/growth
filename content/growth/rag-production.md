@@ -80,4 +80,4 @@ RAG 的输入含检索上下文，经常是 3000–5000 tokens；一次用户对
 - [ ] 记录全链路可观测日志
 - [ ] 上线前用真实业务问题集跑一遍准确率基线
 
-延伸阅读：[AI 项目 POC 评估清单](../../templates/ai-poc-checklist.md)  ·  工具见 [工具与工作流](../../tools/)
+延伸阅读：[AI 项目 POC 评估清单](/templates/ai-poc-checklist/)  ·  工具见 [工具与工作流](/tools/)
