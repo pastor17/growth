@@ -1,0 +1,52 @@
+{{ define "main" }}
+<div class="container page-head column-head" style="--col-color: #4a5568">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span><span>{{ .Title }}</span>
+  </nav>
+  <h1 class="page-title">👤 {{ .Title }}</h1>
+</div>
+
+<div class="container about">
+  <div class="prose">
+    {{ .Content }}
+  </div>
+
+  <h2 class="about__subtitle">职业生涯时间线</h2>
+  <ol class="timeline">
+    {{- range site.Data.timeline -}}
+    <li class="timeline__item">
+      <span class="timeline__year">{{ .year }}</span>
+      <div class="timeline__body">
+        <h3 class="timeline__title">{{ .title }}</h3>
+        <p class="timeline__detail">{{ .detail }}</p>
+      </div>
+    </li>
+    {{- end -}}
+  </ol>
+
+  <h2 class="about__subtitle">联系我</h2>
+  <div class="contact-grid">
+    {{- with site.Params.email -}}
+    <a class="contact-card" href="mailto:{{ . }}">
+      <span class="contact-card__emoji" aria-hidden="true">📮</span>
+      <span class="contact-card__label">邮箱</span>
+      <span class="contact-card__value">{{ . }}</span>
+    </a>
+    {{- end -}}
+    {{- with site.Params.github -}}
+    <a class="contact-card" href="{{ . }}" rel="noopener" target="_blank">
+      <span class="contact-card__emoji" aria-hidden="true">🐙</span>
+      <span class="contact-card__label">GitHub</span>
+      <span class="contact-card__value">{{ . }}</span>
+    </a>
+    {{- end -}}
+    {{- with site.Params.location -}}
+    <div class="contact-card">
+      <span class="contact-card__emoji" aria-hidden="true">📍</span>
+      <span class="contact-card__label">所在地</span>
+      <span class="contact-card__value">{{ . }}</span>
+    </div>
+    {{- end -}}
+  </div>
+</div>
+{{ end }}

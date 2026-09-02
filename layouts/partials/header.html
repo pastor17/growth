@@ -1,0 +1,24 @@
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>{{ site.Title }}</strong>
+        <small>{{ site.Params.subtitle | truncate 26 }}</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="{{ site.Home.RelPermalink }}">首页</a>
+      <a href="{{ "architecture/" | relURL }}">架构实战</a>
+      <a href="{{ "ai/" | relURL }}">AI 专题</a>
+      <a href="{{ "tools/" | relURL }}">工具</a>
+      <a href="{{ "growth/" | relURL }}">成长体系</a>
+      <a href="{{ "startup/" | relURL }}">创业复盘</a>
+      <a href="{{ "projects/" | relURL }}">项目作品</a>
+      <a href="{{ "about/" | relURL }}">关于</a>
+    </nav>
+  </div>
+</header>

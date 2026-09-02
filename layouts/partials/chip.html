@@ -1,0 +1,13 @@
+{{- /* 通用徽章/标签。用法：{{ partial "chip.html" (dict "text" "故障复盘" "href" "/tags/x/" "color" "#1f6f8b" "emoji" "🔥") }} */ -}}
+{{- $color := .color | default "#6b7280" -}}
+{{- if .href -}}
+<a class="chip" href="{{ .href | relURL }}" style="--chip-color: {{ $color }}">
+  {{- with .emoji }}<span class="chip__emoji" aria-hidden="true">{{ . }}</span>{{ end -}}
+  <span class="chip__text">{{ .text }}</span>
+</a>
+{{- else -}}
+<span class="chip" style="--chip-color: {{ $color }}">
+  {{- with .emoji }}<span class="chip__emoji" aria-hidden="true">{{ . }}</span>{{ end -}}
+  <span class="chip__text">{{ .text }}</span>
+</span>
+{{- end -}}

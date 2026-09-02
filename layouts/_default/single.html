@@ -1,0 +1,96 @@
+{{ define "main" }}
+{{- $colEmoji := site.Params.defaultCoverEmoji -}}
+{{- $colColor := "#1f6f8b" -}}
+{{- $colName := .Section -}}
+{{- $colPath := "" -}}
+{{- range first 1 (where site.Data.columns "id" .Section) -}}
+  {{- $colEmoji = .emoji }}{{ $colColor = .color }}{{ $colName = .name }}{{ $colPath = printf "%s/" .id }}{{ end -}}
+
+<article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span>
+      <a href="{{ $colPath | relURL }}">{{ $colName }}</a><span>/</span>
+      <span>{{ .Title }}</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: {{ $colColor }}">
+      <div class="article-header__emoji" aria-hidden="true">{{ .Params.coverEmoji | default $colEmoji }}</div>
+      <div class="article-header__badges">
+        {{- range .Params.series -}}
+          {{- $sid := . -}}
+          {{- range first 1 (where site.Data.series "id" $sid) -}}
+            {{ partial "chip.html" (dict "text" (printf "📚 %s" .name) "href" (printf "series/%s/" ($sid | urlize)) "color" .color) }}
+          {{- end -}}
+        {{- end -}}
+        {{- range .Params.tags -}}
+          {{ partial "chip.html" (dict "text" (printf "#%s" .) "href" (printf "tags/%s/" (. | urlize)) "color" $colColor) }}
+        {{- end -}}
+      </div>
+      <h1 class="article-header__title">{{ .Title }}</h1>
+      {{- with .Params.summary -}}<p class="article-header__summary">{{ . }}</p>{{- end -}}
+      <div class="article-header__meta">
+        <span>✍️ {{ .Params.author | default site.Params.author }}</span>
+        <span>📅 {{ .Date.Format "2006-01-02" }}</span>
+        <span>📝 约 {{ .WordCount }} 字</span>
+        <span>⏱️ 约 {{ .ReadingTime }} 分钟</span>
+      </div>
+    </header>
+
+    {{- with .TableOfContents -}}
+    <details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body">{{ . }}</div>
+    </details>
+    {{- end -}}
+
+    <div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      {{ .Content }}
+    </div>
+
+    <footer class="article-footer">
+      {{- with .Params.tags -}}
+      <div class="article-tags">
+        {{- range . -}}
+          <a class="tag" href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
+        {{- end -}}
+      </div>
+      {{- end -}}
+
+      {{ partial "series-nav.html" . }}
+
+      <nav class="article-pager">
+        {{- with .PrevInSection -}}<a class="article-pager__link" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{- end -}}
+        {{- with .NextInSection -}}<a class="article-pager__link article-pager__link--next" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{- end -}}
+      </nav>
+    </footer>
+  </div>
+</article>
+
+{{- $related := where site.RegularPages "Section" .Section -}}
+{{- $related = where $related "RelPermalink" "ne" .RelPermalink -}}
+{{- $related = first 3 $related -}}
+{{- if gt (len $related) 0 -}}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="{{ $colPath | relURL }}">栏目全部 →</a>
+    </div>
+    <div class="card-grid">
+      {{- range $related -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+  </div>
+</section>
+{{- end -}}
+{{ end }}

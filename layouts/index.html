@@ -1,0 +1,131 @@
+{{ define "main" }}
+{{- $all := site.RegularPages -}}
+{{- $featured := where $all "Params.featured" true -}}
+{{- $latest := first 6 ($all.ByDate.Reverse) -}}
+{{- $toolCount := 0 -}}
+{{- range site.Data.tools }}{{ $toolCount = add $toolCount (len .tools) }}{{ end -}}
+
+<section class="hero">
+  <div class="container hero__inner">
+    <p class="hero__eyebrow">架构专家 · 互联网创业者 · 职业生涯导师</p>
+    <h1 class="hero__title">专注<span>大规模系统架构</span><br>分享真实踩坑与可复用经验</h1>
+    <p class="hero__desc">{{ site.Params.description }}</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="{{ "architecture/" | relURL }}">🏗️ 读架构实战</a>
+      <a class="btn btn--ghost" href="{{ "growth/" | relURL }}">🌱 进入成长体系</a>
+      <a class="btn btn--ghost" href="{{ "about/" | relURL }}">关于我</a>
+    </div>
+    <div class="hero__stats">
+      <div class="stat"><strong>{{ len $all }}</strong><span>篇文章</span></div>
+      <div class="stat"><strong>{{ len site.Data.series }}</strong><span>个系列教程</span></div>
+      <div class="stat"><strong>{{ $toolCount }}</strong><span>个实战工具</span></div>
+      <div class="stat"><strong>{{ len site.Data.templates }}</strong><span>份可下载模板</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">内容栏目</h2>
+      <span class="section__more">六块内容，三类身份互相赋能</span>
+    </div>
+    <div class="column-grid">
+      {{- range where site.Data.columns "id" "not in" (slice "about" "resources") -}}
+        <a class="column-card" href="{{ printf "%s/" .id | relURL }}" style="--col-color: {{ .color }}">
+          <span class="column-card__emoji" aria-hidden="true">{{ .emoji }}</span>
+          <h3 class="column-card__name">{{ .name }}</h3>
+          <p class="column-card__tagline">{{ .tagline }}</p>
+          <p class="column-card__desc">{{ .description }}</p>
+        </a>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+{{- with $featured -}}
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">精选文章</h2>
+    </div>
+    <div class="card-grid">
+      {{- range first 6 .ByDate.Reverse -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+  </div>
+</section>
+{{- end -}}
+
+{{- with $latest -}}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">最近更新</h2>
+      <a class="section__more" href="{{ "architecture/" | relURL }}">查看全部栏目 →</a>
+    </div>
+    <div class="card-grid">
+      {{- range . -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+  </div>
+</section>
+{{- end -}}
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">工具 & 工作流</h2>
+      <a class="section__more" href="{{ "tools/" | relURL }}">工具总览 →</a>
+    </div>
+    <p class="section__lead">不只给链接：每个工具都讲清 <strong>什么场景用、什么场景不要用、坑点与替代方案</strong>。只收录亲身实战过的工具，宁缺毋滥。</p>
+    <div class="cat-grid">
+      {{- range site.Data.tools -}}
+        <a class="cat-card" href="{{ "tools/" | relURL }}#{{ .id }}" style="--cat-color: {{ "#0e7c66" }}">
+          <span class="cat-card__emoji" aria-hidden="true">{{ .emoji }}</span>
+          <h3 class="cat-card__name">{{ .name }}</h3>
+          <p class="cat-card__desc">{{ .description }}</p>
+          <span class="cat-card__count">{{ len .tools }} 个工具</span>
+        </a>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">成长体系</h2>
+      <a class="section__more" href="{{ "growth/" | relURL }}">总目录 →</a>
+    </div>
+    <p class="section__lead">体系化课程式文章集：<strong>工程技术教程 · 软技能 · 个人成长 · 职业路径规划</strong>，有目录、有递进、有清单，拒绝零散鸡汤。</p>
+    <div class="series-grid">
+      {{- range site.Data.series -}}
+        <a class="series-card" href="{{ "growth/" | relURL }}#{{ .id }}" style="--series-color: {{ .color }}">
+          <span class="series-card__emoji" aria-hidden="true">{{ .emoji }}</span>
+          <h3 class="series-card__name">{{ .name }}</h3>
+          <p class="series-card__audience">适合：{{ .audience }}</p>
+          <p class="series-card__desc">{{ .description }}</p>
+          <span class="series-card__count">{{ len .chapters }} 章</span>
+        </a>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">可下载资源</h2>
+      <a class="section__more" href="{{ "resources/" | relURL }}">全部资源 →</a>
+    </div>
+    <div class="resource-pills">
+      {{- range site.Data.templates -}}
+        <a class="resource-pill" href="{{ printf "templates/%s" .file | relURL }}">📄 {{ .name }}</a>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,33 @@
+{{ define "main" }}
+{{- $plural := .Data.Plural -}}
+<div class="container page-head">
+  {{- if eq $plural "series" -}}
+    <h1 class="page-title">📚 系列教程</h1>
+    <p class="page-subtitle">成长体系里的每个系列都有目录、有递进、有清单，按顺序阅读效果最佳。</p>
+  {{- else -}}
+    <h1 class="page-title">🏷️ 全部标签</h1>
+    <p class="page-subtitle">按标签跨栏目检索：架构实战、AI、创业、工具与职业成长。</p>
+  {{- end -}}
+</div>
+<div class="container">
+  {{- if eq $plural "series" -}}
+    <div class="series-grid">
+      {{- range site.Data.series -}}
+        <a class="series-card" href="{{ printf "series/%s/" (.id | urlize) | relURL }}" style="--series-color: {{ .color }}">
+          <span class="series-card__emoji" aria-hidden="true">{{ .emoji }}</span>
+          <h3 class="series-card__name">{{ .name }}</h3>
+          <p class="series-card__audience">适合：{{ .audience }}</p>
+          <p class="series-card__desc">{{ .description }}</p>
+          <span class="series-card__count">{{ len .chapters }} 章</span>
+        </a>
+      {{- end -}}
+    </div>
+  {{- else -}}
+    <div class="term-grid">
+      {{- range .Data.Terms.Alphabetical -}}
+        <a class="term-pill" href="{{ .Page.RelPermalink }}">#{{ .Page.Title }}<span>{{ .Count }}</span></a>
+      {{- end -}}
+    </div>
+  {{- end -}}
+</div>
+{{ end }}

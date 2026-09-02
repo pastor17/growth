@@ -1,0 +1,35 @@
+{{- /* 文章卡片。上下文为单个文章 Page */ -}}
+{{- $colEmoji := site.Params.defaultCoverEmoji -}}
+{{- $colColor := "#1f6f8b" -}}
+{{- $colName := .Section -}}
+{{- range first 1 (where site.Data.columns "id" .Section) -}}
+  {{- if .emoji }}{{ $colEmoji = .emoji }}{{ end -}}
+  {{- if .color }}{{ $colColor = .color }}{{ end -}}
+  {{- if .name }}{{ $colName = .name }}{{ end -}}
+{{- end -}}
+{{- $coverEmoji := .Params.coverEmoji | default $colEmoji -}}
+<article class="card">
+  <a class="card__cover" href="{{ .RelPermalink }}" style="--cover-color: {{ $colColor }}" aria-label="{{ .Title }}">
+    <span class="card__emoji" aria-hidden="true">{{ $coverEmoji }}</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges">
+      {{- range first 3 .Params.tags -}}
+        {{ partial "chip.html" (dict "text" . "href" (printf "tags/%s/" (. | urlize)) "color" $colColor) }}
+      {{- end -}}
+    </div>
+    <h3 class="card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{- with .Params.summary -}}
+      <p class="card__summary">{{ . | plainify | truncate 96 }}</p>
+    {{- else -}}
+      <p class="card__summary">{{ .Summary | plainify | truncate 96 }}</p>
+    {{- end -}}
+    <div class="card__meta">
+      <span>{{ $colName }}</span>
+      <span>·</span>
+      <span>{{ .Date.Format "2006-01-02" }}</span>
+      <span>·</span>
+      <span>约 {{ .ReadingTime }} 分钟</span>
+    </div>
+  </div>
+</article>

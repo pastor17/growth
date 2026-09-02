@@ -1,0 +1,34 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 {{ site.Title }}</h2>
+        <p>{{ site.Params.description }}</p>
+        <p class="site-footer__contact">
+          {{- with site.Params.email }}📮 <a href="mailto:{{ . }}">{{ . }}</a>{{ end -}}
+          {{- with site.Params.github }} · <a href="{{ . }}" rel="noopener" target="_blank">GitHub</a>{{ end -}}
+        </p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3>
+        {{- range where site.Data.columns "id" "ne" "about" -}}
+          <a href="{{ printf "%s/" .id | relURL }}">{{ .emoji }} {{ .name }}</a>
+        {{- end -}}
+        <a href="{{ "about/" | relURL }}">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3>
+        {{- range site.Data.series -}}
+          <a href="{{ printf "series/%s/" (.id | urlize) | relURL }}">{{ .emoji }} {{ .name }}</a>
+        {{- end -}}
+      </div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3>
+        {{- range site.Data.templates -}}
+          <a href="{{ printf "templates/%s" .file | relURL }}">📄 {{ .name }}</a>
+        {{- end -}}
+      </div>
+    </div>
+    <p class="site-footer__copyright">{{ site.Params.copyright }}</p>
+  </div>
+</footer>

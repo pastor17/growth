@@ -1,0 +1,59 @@
+{{ define "main" }}
+{{- $growthPosts := where site.RegularPages "Section" "growth" -}}
+{{- $groups := slice -}}
+{{- range site.Data.series -}}
+  {{- if not (in $groups .group) }}{{ $groups = $groups | append .group }}{{ end -}}
+{{- end -}}
+
+<div class="container page-head column-head" style="--col-color: #b8772f">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span><span>{{ .Title }}</span>
+  </nav>
+  <h1 class="page-title">🌱 {{ .Title }}</h1>
+  <p class="page-subtitle">硬技术教程 · 软技能 · 个人成长 · 职业路径规划</p>
+  {{- with .Content -}}<div class="prose">{{ . }}</div>{{- end -}}
+</div>
+
+<div class="container">
+  {{- range $groups -}}
+    {{- $group := . -}}
+    <section class="growth-group">
+      <h2 class="growth-group__title">{{ $group }}</h2>
+      <div class="series-list">
+        {{- range where site.Data.series "group" $group -}}
+          <div class="series-block" id="{{ .id }}" style="--series-color: {{ .color }}">
+            <div class="series-block__head">
+              <span class="series-block__emoji" aria-hidden="true">{{ .emoji }}</span>
+              <div class="series-block__headtext">
+                <h3 class="series-block__name">{{ .name }}</h3>
+                <p class="series-block__audience">适合：{{ .audience }} · 前置：{{ .prerequisite }}</p>
+              </div>
+            </div>
+            <p class="series-block__desc">{{ .description }}</p>
+            <ol class="series-chapters">
+              {{- range $i, $ch := .chapters -}}
+                {{- $post := false -}}
+                {{- range first 1 (where $growthPosts "File.ContentBaseName" $ch.slug) -}}{{- $post = . -}}{{- end -}}
+                <li class="series-chapter series-chapter--{{ $ch.status }}">
+                  <span class="series-chapter__num">{{ add $i 1 }}</span>
+                  <div class="series-chapter__body">
+                    {{- if $post -}}
+                      <a class="series-chapter__title" href="{{ $post.RelPermalink }}">{{ $ch.title }}</a>
+                    {{- else -}}
+                      <span class="series-chapter__title">{{ $ch.title }}</span>
+                    {{- end -}}
+                    {{- with $ch.summary }}<p class="series-chapter__summary">{{ . }}</p>{{ end -}}
+                  </div>
+                  <span class="series-chapter__status">
+                    {{- if eq $ch.status "done" }}已发布{{ else if eq $ch.status "draft" }}撰写中{{ else }}规划中{{ end -}}
+                  </span>
+                </li>
+              {{- end -}}
+            </ol>
+          </div>
+        {{- end -}}
+      </div>
+    </section>
+  {{- end -}}
+</div>
+{{ end }}

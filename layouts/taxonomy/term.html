@@ -1,0 +1,81 @@
+{{ define "main" }}
+{{- $plural := .Data.Plural -}}
+{{- $term := .Data.Term -}}
+
+{{- if eq $plural "series" -}}
+  {{- $series := false -}}
+  {{- range first 1 (where site.Data.series "id" $term) -}}{{- $series = . -}}{{- end -}}
+  {{- $growthPosts := where site.RegularPages "Section" "growth" -}}
+  <div class="container page-head term-head" style="--term-color: {{ with $series }}{{ .color }}{{ else }}#b8772f{{ end }}">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span>
+      <a href="{{ "series/" | relURL }}">系列教程</a><span>/</span>
+      <span>{{ with $series }}{{ .name }}{{ else }}{{ $term }}{{ end }}</span>
+    </nav>
+    <h1 class="page-title">{{ with $series }}{{ .emoji }} {{ end }}{{ with $series }}{{ .name }}{{ else }}{{ $term }}{{ end }}</h1>
+    {{- with $series -}}
+      <p class="page-subtitle">{{ .description }}</p>
+      <p class="term-count">适合：{{ .audience }} · 前置：{{ .prerequisite }} · 共 {{ len .chapters }} 章</p>
+    {{- end -}}
+  </div>
+  <div class="container">
+    {{- if $series -}}
+    <ol class="series-chapters">
+      {{- range $i, $ch := $series.chapters -}}
+        {{- $post := false -}}
+        {{- range first 1 (where $growthPosts "File.ContentBaseName" $ch.slug) -}}{{- $post = . -}}{{- end -}}
+        <li class="series-chapter series-chapter--{{ $ch.status }}">
+          <span class="series-chapter__num">{{ add $i 1 }}</span>
+          <div class="series-chapter__body">
+            {{- if $post -}}
+              <a class="series-chapter__title" href="{{ $post.RelPermalink }}">{{ $ch.title }}</a>
+            {{- else -}}
+              <span class="series-chapter__title">{{ $ch.title }}</span>
+            {{- end -}}
+            {{- with $ch.summary }}<p class="series-chapter__summary">{{ . }}</p>{{ end -}}
+          </div>
+          <span class="series-chapter__status">
+            {{- if eq $ch.status "done" }}已发布{{ else if eq $ch.status "draft" }}撰写中{{ else }}规划中{{ end -}}
+          </span>
+        </li>
+      {{- end -}}
+    </ol>
+    {{- end -}}
+
+    {{- $paginator := .Paginate (.Pages.ByDate.Reverse) -}}
+    {{- if gt (len $paginator.Pages) 0 -}}
+    <h2 class="tool-group__title" style="margin-top: 40px;">📚 已发布文章</h2>
+    <div class="card-grid">
+      {{- range $paginator.Pages -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+    {{ partial "pagination.html" $paginator }}
+    {{- end -}}
+  </div>
+
+{{- else -}}
+  <div class="container page-head term-head" style="--term-color: #1f6f8b">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span>
+      <a href="{{ "tags/" | relURL }}">标签</a><span>/</span>
+      <span>{{ .Title }}</span>
+    </nav>
+    <h1 class="page-title"># {{ .Title }}</h1>
+    <p class="term-count">共 {{ len .Pages }} 篇文章</p>
+  </div>
+  <div class="container">
+    {{- $paginator := .Paginate (.Pages.ByDate.Reverse) -}}
+    {{- if gt (len $paginator.Pages) 0 -}}
+    <div class="card-grid">
+      {{- range $paginator.Pages -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+    {{ partial "pagination.html" $paginator }}
+    {{- else -}}
+    <p class="empty">这个标签下还没有文章。</p>
+    {{- end -}}
+  </div>
+{{- end -}}
+{{ end }}

@@ -1,0 +1,26 @@
+{{ define "main" }}
+{{- $colEmoji := "" -}}{{- $colColor := "#1f6f8b" -}}{{- $colTagline := "" -}}
+{{- range first 1 (where site.Data.columns "id" .Section) -}}
+  {{- $colEmoji = .emoji }}{{ $colColor = .color }}{{ $colTagline = .tagline }}{{ end -}}
+<div class="container page-head column-head" style="--col-color: {{ $colColor }}">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span><span>{{ .Title }}</span>
+  </nav>
+  <h1 class="page-title">{{ with $colEmoji }}{{ . }} {{ end }}{{ .Title }}</h1>
+  {{- with $colTagline -}}<p class="page-subtitle">{{ . }}</p>{{- end -}}
+  {{- with .Content -}}<div class="prose">{{ . }}</div>{{- end -}}
+</div>
+<div class="container">
+  {{- $paginator := .Paginate (.Pages.ByDate.Reverse) -}}
+  {{- if gt (len $paginator.Pages) 0 -}}
+  <div class="card-grid">
+    {{- range $paginator.Pages -}}
+      {{ partial "article-card.html" . }}
+    {{- end -}}
+  </div>
+  {{ partial "pagination.html" $paginator }}
+  {{- else -}}
+  <p class="empty">这个栏目正在陆续更新，敬请期待。</p>
+  {{- end -}}
+</div>
+{{ end }}

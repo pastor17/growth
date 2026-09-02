@@ -1,0 +1,33 @@
+{{- /* 系列内上下篇导航。上下文为当前文章 Page，需有 .Params.series 与 .Params.weight */ -}}
+{{- with .Params.series -}}
+  {{- $sid := index . 0 -}}
+  {{- $siblings := where site.RegularPages "Params.series" "intersect" (slice $sid) -}}
+  {{- $siblings = sort $siblings "Params.weight" "asc" -}}
+  {{- if gt (len $siblings) 1 -}}
+    {{- $prev := false -}}{{- $next := false -}}{{- $found := false -}}
+    {{- range $siblings -}}
+      {{- if eq .RelPermalink $.RelPermalink -}}
+        {{- $found = true -}}
+      {{- else if not $found -}}
+        {{- $prev = . -}}
+      {{- else if and (not $next) $found -}}
+        {{- $next = . -}}
+      {{- end -}}
+    {{- end -}}
+    <nav class="series-nav" aria-label="系列导航">
+      <div class="series-nav__label">系列章节</div>
+      <div class="series-nav__links">
+        {{- with $prev -}}
+          <a class="series-nav__link" href="{{ .RelPermalink }}">← 上一章 · {{ .Title }}</a>
+        {{- else -}}
+          <span class="series-nav__link is-disabled">已是最前一篇</span>
+        {{- end -}}
+        {{- with $next -}}
+          <a class="series-nav__link series-nav__link--next" href="{{ .RelPermalink }}">{{ .Title }} · 下一章 →</a>
+        {{- else -}}
+          <span class="series-nav__link series-nav__link--next is-disabled">已是最后一篇</span>
+        {{- end -}}
+      </div>
+    </nav>
+  {{- end -}}
+{{- end -}}

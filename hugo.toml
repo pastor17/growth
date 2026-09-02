@@ -1,0 +1,54 @@
+# =============================================================
+# 架构 · 创业 · 成长 —— 个人站点 Hugo 配置
+# 人设定位：架构专家 ｜ 互联网创业者 ｜ 职业生涯导师
+# =============================================================
+
+# GitHub Pages 地址：https://pastor17.github.io/growth/
+# 用户：pastor17 ｜ 仓库：growth ｜ 部署分支：growth
+baseURL = 'https://pastor17.github.io/growth/'
+title = '架构 · 创业 · 成长'
+locale = 'zh-CN'
+hasCJKLanguage = true
+summaryLength = 140
+enableEmoji = true
+enableRobotsTXT = true
+disableKinds = ['RSS']
+disableHugoGeneratorInject = true
+
+[params]
+  # 一句话定位 slogan（出现在首页首屏与站点副标题）
+  subtitle = '专注大规模系统架构 · 互联网连续创业者 · 技术人职业生涯顾问'
+  description = '分享真实踩坑、架构实战、创业思考与 AI 落地，只输出可复用经验，不贩卖焦虑。'
+  author = 'diunilaomei'            # 文章署名，可改成你的名字 / ID
+  siteName = '架构 · 创业 · 成长'
+  copyright = '© 2026 diunilaomei · 架构 · 创业 · 成长'
+  defaultCoverEmoji = '🧱'
+  # 联系方式（关于页、页脚会用到）
+  email = 'irudder@126.com'
+  github = 'https://github.com/pastor17'
+  location = '中国'
+  # 主题色（保持克制、专业；可整体换肤）
+  themeColor = '#1f6f8b'
+
+# -------------------------------------------------------------
+# 分类体系（taxonomy）
+#   tag     → 跨栏目标签（故障复盘 / 技术选型 / AI架构 / 行业剖析 / 软技能 …）
+#   series  → 系列教程（成长体系里按「系列」组织章节，支持上下篇导航）
+# -------------------------------------------------------------
+[taxonomies]
+  tag = 'tags'
+  series = 'series'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
+
+# 分页：栏目列表每页 12 篇
+[pagination]
+  pagerSize = 12
+  path = 'page'

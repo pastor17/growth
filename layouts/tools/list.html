@@ -1,0 +1,57 @@
+{{ define "main" }}
+<div class="container page-head column-head" style="--col-color: #0e7c66">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="{{ site.Home.RelPermalink }}">首页</a><span>/</span><span>{{ .Title }}</span>
+  </nav>
+  <h1 class="page-title">🧰 {{ .Title }}</h1>
+  <p class="page-subtitle">真实在用的工具 · 脚本 · 模板 · 工作流</p>
+  {{- with .Content -}}<div class="prose">{{ . }}</div>{{- end -}}
+</div>
+
+<div class="container">
+  {{- range site.Data.tools -}}
+  <section class="tool-group" id="{{ .id }}">
+    <h2 class="tool-group__title">{{ .emoji }} {{ .name }}</h2>
+    <p class="tool-group__desc">{{ .description }}</p>
+    <div class="table-wrap">
+      <table class="tool-table">
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>用途</th>
+            <th>适用场景</th>
+            <th>不适用场景</th>
+            <th>踩坑提醒</th>
+            <th>备选方案</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range .tools -}}
+          <tr>
+            <th scope="row">{{ .name }}</th>
+            <td>{{ .purpose }}</td>
+            <td>{{ .scenario }}</td>
+            <td>{{ .notFor }}</td>
+            <td>{{ .pitfall }}</td>
+            <td>{{ .alternative }}</td>
+          </tr>
+          {{- end -}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {{- end -}}
+
+  {{- $toolPosts := where site.RegularPages "Section" "tools" -}}
+  {{- if gt (len $toolPosts) 0 -}}
+  <section class="tool-group">
+    <h2 class="tool-group__title">📝 工具专题文章</h2>
+    <div class="card-grid">
+      {{- range $toolPosts.ByDate.Reverse -}}
+        {{ partial "article-card.html" . }}
+      {{- end -}}
+    </div>
+  </section>
+  {{- end -}}
+</div>
+{{ end }}
