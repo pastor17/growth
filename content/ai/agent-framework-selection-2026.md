@@ -71,3 +71,9 @@ coverEmoji: "🧩"
 这篇没有给你标准答案，因为 Agent 选型本来就不该有标准答案——你的业务形态、团队和合规要求才是答案本身。我的建议只有一条：别让框架评测文章替你决定，拿自己的任务去做一次 POC，比读十篇横评都有用。
 
 真用起来之后，编排和推理层的工具我在[工具栏目](../../tools/)里有记录。
+
+## 参考来源
+
+- [LearnAgent：Agent SDK 2026 年中选型指南](https://learnagent.org/library/compare/agent-sdk-selection-2026-mid/)
+- [CSDN：Agent 框架横评（「四层分化」观点来源之一）](https://blog.csdn.net/2302_79868162/article/details/163596163)
+- [AgentList：2026 主流 Agent 框架横评与决策树](https://www.agentlist.top/zh/articles/best-ai-agent-framework-2026/)

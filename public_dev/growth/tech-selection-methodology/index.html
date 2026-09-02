@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>技术选型完整方法论：如何做 POC、如何评估取舍 · 架构 · 创业 · 成长</title><meta name="description" content="选型不是列优缺点打分，而是把业务约束翻译成可验证的假设，用 POC 验证，再写 ADR 留痕。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/growth/tech-selection-methodology/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="技术选型完整方法论：如何做 POC、如何评估取舍">
+<meta property="og:description" content="选型不是列优缺点打分，而是把业务约束翻译成可验证的假设，用 POC 验证，再写 ADR 留痕。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/growth/tech-selection-methodology/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="技术选型, 架构决策, 方法论"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-01\",\"description\":\"选型不是列优缺点打分，而是把业务约束翻译成可验证的假设，用 POC 验证，再写 ADR 留痕。\",\"headline\":\"技术选型完整方法论：如何做 POC、如何评估取舍\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/growth/tech-selection-methodology/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/growth/">成长体系</a><span>/</span>
+      <span>技术选型完整方法论：如何做 POC、如何评估取舍</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #b8772f">
+      <div class="article-header__emoji" aria-hidden="true">⚖️</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/series/engineering-backend/" style="--chip-color: #1f6f8b"><span class="chip__text">📚 后端架构落地教程</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" style="--chip-color: #b8772f"><span class="chip__text">#技术选型</span>
+</a><a class="chip" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%86%B3%E7%AD%96/" style="--chip-color: #b8772f"><span class="chip__text">#架构决策</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">#方法论</span>
+</a></div>
+      <h1 class="article-header__title">技术选型完整方法论：如何做 POC、如何评估取舍</h1><p class="article-header__summary">选型不是列优缺点打分，而是把业务约束翻译成可验证的假设，用 POC 验证，再写 ADR 留痕。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-01</span>
+        <span>📝 约 1347 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#先把话说清楚选型没有最优解">先把话说清楚：选型没有最优解</a></li>
+    <li><a href="#第一步把业务约束翻译成选型标准">第一步：把业务约束翻译成选型标准</a></li>
+    <li><a href="#第二步候选方案收敛到-23-个">第二步：候选方案，收敛到 2–3 个</a></li>
+    <li><a href="#第三步poc-只验证那个不确定的假设">第三步：POC 只验证「那个不确定的假设」</a></li>
+    <li><a href="#第四步把决策写下来adr">第四步：把决策写下来（ADR）</a></li>
+    <li><a href="#常见取舍速查我自己的判断框架">常见取舍速查（我自己的判断框架）</a></li>
+    <li><a href="#落地清单">落地清单</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="先把话说清楚选型没有最优解">先把话说清楚：选型没有最优解</h2>
+<p>网上大量选型文章是「A vs B 优缺点清单」，看完了还是不知道选什么。原因是<strong>脱离业务约束的优缺点没有意义</strong>：MySQL 的「缺点」在没有写库压力的场景里根本不是缺点。</p>
+<p>我的经验是三步走：<strong>翻译约束 → 提出可证伪的假设 → POC 验证</strong>。选型不是打分题，是假设检验题。</p>
+<h2 id="第一步把业务约束翻译成选型标准">第一步：把业务约束翻译成选型标准</h2>
+<p>在打开任何技术对比之前，先回答这几个问题，并把答案写成<strong>可衡量的指标</strong>：</p>
+<ol>
+<li><strong>规模约束</strong>：真实峰值 QPS 预估多少？数据量三年后多大？（拍脑袋要乘 2）</li>
+<li><strong>一致性约束</strong>：业务允许最终一致吗？钱、订单这类不允许。</li>
+<li><strong>成本约束</strong>：预算多少？包括人力成本——一个团队没接触过的技术栈，学习成本常常是隐性的最大成本。</li>
+<li><strong>运维约束</strong>：团队有几个人能值班？能不能接受 3 点起来修一个没人会的组件？</li>
+<li><strong>演进约束</strong>：这个选择锁定了什么？迁移成本多高？</li>
+</ol>
+<blockquote>
+<p>踩坑记录：我早期做过一次「技术理想主义」的选型，给一个日活几千的产品上了当时最时髦的微服务 + 全套中间件，理由是「架构要先进」。结果是 5 个人的团队一半精力花在维护基础设施上。规模不到，先进架构就是负债。<strong>架构复杂度和业务复杂度不匹配，是反模式的第一条。</strong></p></blockquote>
+<h2 id="第二步候选方案收敛到-23-个">第二步：候选方案，收敛到 2–3 个</h2>
+<p>把约束翻译成「一票否决项」和「加分项」：</p>
+<ul>
+<li><strong>一票否决</strong>：比如公司合规要求数据不出域 → 纯 SaaS 方案直接出局；团队没人会且招不到 → 冷门语言组件出局。</li>
+<li><strong>加分项</strong>：性能、生态、文档、招人容易度、与现有技术栈的一致性。</li>
+</ul>
+<p>先砍掉被一票否决的，剩下 2–3 个做 POC。<strong>不要 POC 太多方案</strong>，每多一个，验证成本翻倍。</p>
+<h2 id="第三步poc-只验证那个不确定的假设">第三步：POC 只验证「那个不确定的假设」</h2>
+<p>POC 最大的误区是把官方 demo 跑一遍就叫验证。POC 要验证的是<strong>你最不确定、错了代价最大的一件事</strong>：</p>
+<ul>
+<li>选缓存：不确定的是「热点场景下命中率与穿透表现」→ 用真实流量回放压测。</li>
+<li>选消息队列：不确定的是「极端堆积下的吞吐与延迟」→ 造 10 倍峰值流量看积压。</li>
+<li>选向量库：不确定的是「召回质量」→ 用你自己业务的数据集测，而不是官方 toy dataset。</li>
+</ul>
+<p>POC 必须提前写清楚<strong>通过标准</strong>。我见过太多 POC 跑了两周，结论却是「感觉还行」——没有通过标准，等于没验证。</p>
+<blockquote>
+<p>踩坑记录：有一次选型做 POC，测出来延迟达标但成本超预算 3 倍，因为只测了性能没测成本。<strong>POC 的验收维度必须包含性能、成本、运维复杂度三项</strong>，只看一项等于盲人摸象。</p></blockquote>
+<h2 id="第四步把决策写下来adr">第四步：把决策写下来（ADR）</h2>
+<p>选定之后，花 20 分钟写一份<strong>架构决策记录（ADR）</strong>，包含：背景、候选方案、为什么选它、放弃了什么、如果数据变化什么条件下要推翻重选。</p>
+<p>ADR 的价值在三个月后：新同学问「为什么不用 X？」时，你不用靠回忆解释，团队也不会反复争论同一个已经决策过的问题。</p>
+<h2 id="常见取舍速查我自己的判断框架">常见取舍速查（我自己的判断框架）</h2>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>我的倾向</th>
+          <th>为什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>数据量百万级以内</td>
+          <td>PostgreSQL 单库</td>
+          <td>事务、运维、招人都省心</td>
+      </tr>
+      <tr>
+          <td>只有 1–2 个服务</td>
+          <td>单体 + 进程内缓存</td>
+          <td>微服务是手段不是目的</td>
+      </tr>
+      <tr>
+          <td>读多写少、热点明显</td>
+          <td>加缓存，先不加读写分离</td>
+          <td>少一个数据源就少一种一致性噩梦</td>
+      </tr>
+      <tr>
+          <td>消息量小、要求不高</td>
+          <td>先上简单 MQ 或 DB 队列</td>
+          <td>别为「未来可能」预支复杂度</td>
+      </tr>
+      <tr>
+          <td>需要私有化 AI</td>
+          <td>先算 token 成本账，再谈模型</td>
+          <td>见 AI 工程教程系列</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="落地清单">落地清单</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 写出 5 条以上业务约束，并能量化为指标</li>
+<li><input disabled="" type="checkbox"> 明确一票否决项，收敛候选到 2–3 个</li>
+<li><input disabled="" type="checkbox"> POC 只验证 1 个核心假设，且含性能 / 成本 / 运维三维度</li>
+<li><input disabled="" type="checkbox"> 提前写清 POC 通过标准</li>
+<li><input disabled="" type="checkbox"> 决策后 20 分钟内写 ADR</li>
+</ul>
+<p>延伸阅读：<a href="../../templates/architecture-review-checklist.md">架构评审清单</a>  ·  <a href="../../templates/tech-design-template.md">技术方案文档模板</a>  ·  下一章《业务架构拆解》已经写好：<a href="business-architecture-breakdown/">去看</a></p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">#技术选型</a><a class="tag" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%86%B3%E7%AD%96/">#架构决策</a><a class="tag" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">#方法论</a></div><nav class="series-nav" aria-label="系列导航">
+      <div class="series-nav__label">系列章节</div>
+      <div class="series-nav__links"><span class="series-nav__link is-disabled">已是最前一篇</span><a class="series-nav__link series-nav__link--next" href="/growth/growth/business-architecture-breakdown/">如何做业务架构拆解：从需求输出架构方案 · 下一章 →</a></div>
+    </nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/growth/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/growth/rag-production/" style="--cover-color: #b8772f" aria-label="RAG 系统从 POC 到生产：完整落地要点">
+    <span class="card__emoji" aria-hidden="true">🔍</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/rag/" style="--chip-color: #b8772f"><span class="chip__text">RAG</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">LLM</span>
+</a><a class="chip" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/" style="--chip-color: #b8772f"><span class="chip__text">AI架构</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/rag-production/">RAG 系统从 POC 到生产：完整落地要点</a></h3><p class="card__summary">检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/knowledge-system/" style="--cover-color: #b8772f" aria-label="工程师知识体系搭建：建立自己的知识树">
+    <span class="card__emoji" aria-hidden="true">🌳</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">个人成长</span>
+</a><a class="chip" href="/growth/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="--chip-color: #b8772f"><span class="chip__text">知识管理</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">方法论</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/knowledge-system/">工程师知识体系搭建：建立自己的知识树</a></h3><p class="card__summary">刷了十年文章还是觉得没积累？问题不在输入量，在「没有根的知识是长不住的」。给出一套从输入到沉淀到调用的知识树方法。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/tech-design-writing/" style="--cover-color: #b8772f" aria-label="如何写技术方案：把想法讲清楚，讲给对的人听">
+    <span class="card__emoji" aria-hidden="true">📝</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/" style="--chip-color: #b8772f"><span class="chip__text">软技能</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/" style="--chip-color: #b8772f"><span class="chip__text">技术方案</span>
+</a><a class="chip" href="/growth/tags/%E6%96%87%E6%A1%A3/" style="--chip-color: #b8772f"><span class="chip__text">文档</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/tech-design-writing/">如何写技术方案：把想法讲清楚，讲给对的人听</a></h3><p class="card__summary">很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

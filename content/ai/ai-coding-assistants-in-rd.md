@@ -80,3 +80,9 @@ coverEmoji: "💻"
 最后说句可能不太讨喜的话：AI 编程工具这件事，团队里八成价值来自「先别乱」——规则、度量、CR 守住了，收益自然会来；守不住，工具只会把混乱放大。
 
 工具层面的对比和踩坑，我放在[工具栏目](../../tools/)里慢慢写。
+
+## 参考来源
+
+- [Stack Overflow Developer Survey（官方主页）](https://survey.stackoverflow.co/)——84% / 51% 两个数字的原始出处是 2025 版调查（[AI 章节](https://survey.stackoverflow.co/2025/ai)），49,000+ 受访者、177 个国家/地区
+- [SO Survey 2026 解读：AI 采用 84%，信任缺口明显](https://byteiota.com/stack-overflow-dev-survey-2026-ai-at-84-trust-at-3/)（第三方解读，可对照原文）
+- [2026 AI 编程助手对比：Cursor / Claude Code / Copilot / Windsurf 等](https://aibsz.com/2026/08/18/2026-ai-coding-assistants-comparison-cursor-claude-copilot-windsurf/)（行业文章，仅作工具定位参考，满意度数字请勿直接引用）

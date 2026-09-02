@@ -65,4 +65,4 @@ coverEmoji: "⚙️"
 - [ ] 锁版本、小版本灰度升级
 - [ ] 队列 + 超时 + 排队告警 + 模型路由降级
 
-延伸阅读：[上章 · RAG 生产落地](rag-production/)  ·  [vLLM / Langfuse 工具行](../../tools/)  ·  下章预告 · AI 成本控制
+延伸阅读：[vLLM / Langfuse 工具行](../../tools/)  ·  系列下一篇《AI 项目成本控制》还在写，先占个坑

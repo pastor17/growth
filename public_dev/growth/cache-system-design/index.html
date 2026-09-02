@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>缓存体系设计实战：多级缓存、失效策略与缓存坑 · 架构 · 创业 · 成长</title><meta name="description" content="多级缓存怎么搭、TTL 怎么设、雪崩/穿透/击穿/热 key 怎么防，以及最重要的：什么时候不该用缓存。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/growth/cache-system-design/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="缓存体系设计实战：多级缓存、失效策略与缓存坑">
+<meta property="og:description" content="多级缓存怎么搭、TTL 怎么设、雪崩/穿透/击穿/热 key 怎么防，以及最重要的：什么时候不该用缓存。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/growth/cache-system-design/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="缓存, 稳定性, 方法论, 架构实战"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-02\",\"description\":\"多级缓存怎么搭、TTL 怎么设、雪崩/穿透/击穿/热 key 怎么防，以及最重要的：什么时候不该用缓存。\",\"headline\":\"缓存体系设计实战：多级缓存、失效策略与缓存坑\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/growth/cache-system-design/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/growth/">成长体系</a><span>/</span>
+      <span>缓存体系设计实战：多级缓存、失效策略与缓存坑</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #b8772f">
+      <div class="article-header__emoji" aria-hidden="true">🗄️</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/series/engineering-backend/" style="--chip-color: #1f6f8b"><span class="chip__text">📚 后端架构落地教程</span>
+</a><a class="chip" href="/growth/tags/%E7%BC%93%E5%AD%98/" style="--chip-color: #b8772f"><span class="chip__text">#缓存</span>
+</a><a class="chip" href="/growth/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/" style="--chip-color: #b8772f"><span class="chip__text">#稳定性</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">#方法论</span>
+</a><a class="chip" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/" style="--chip-color: #b8772f"><span class="chip__text">#架构实战</span>
+</a></div>
+      <h1 class="article-header__title">缓存体系设计实战：多级缓存、失效策略与缓存坑</h1><p class="article-header__summary">多级缓存怎么搭、TTL 怎么设、雪崩/穿透/击穿/热 key 怎么防，以及最重要的：什么时候不该用缓存。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-02</span>
+        <span>📝 约 1057 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#先把结论放前面缓存是放大器不是保险">先把结论放前面：缓存是放大器，不是保险</a></li>
+    <li><a href="#第一问要不要缓存很多人跳过了这步">第一问：要不要缓存？（很多人跳过了这步）</a></li>
+    <li><a href="#多级缓存怎么搭三级模型">多级缓存怎么搭（三级模型）</a></li>
+    <li><a href="#失效策略ttl-的三个设计点">失效策略：TTL 的三个设计点</a></li>
+    <li><a href="#四大经典故障的防线每个都要单独防">四大经典故障的防线（每个都要单独防）</a></li>
+    <li><a href="#一致性接受缓存最终一致但要控制窗口">一致性：接受「缓存最终一致」，但要控制窗口</a></li>
+    <li><a href="#落地清单">落地清单</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="先把结论放前面缓存是放大器不是保险">先把结论放前面：缓存是放大器，不是保险</h2>
+<p>缓存放大的是「读性能」，也放大「不一致与故障」：命中的 1000 QPS 很爽，失效瞬间回源 1000 QPS 可能直接打垮数据库。所以设计缓存体系的第一原则是：<strong>先想清楚失效与回源，再想命中率</strong>。</p>
+<h2 id="第一问要不要缓存很多人跳过了这步">第一问：要不要缓存？（很多人跳过了这步）</h2>
+<ul>
+<li>命中率上不去的场景不要加：写多读少、数据变化极快（如实时行情秒级变动），缓存只会引入不一致。</li>
+<li>单机内存就够的场景别上分布式缓存：减少一个组件就少一种故障。</li>
+<li>加缓存前先压测数据库：多数系统是慢 SQL 和缺索引，不是缺缓存。</li>
+</ul>
+<h2 id="多级缓存怎么搭三级模型">多级缓存怎么搭（三级模型）</h2>
+<pre tabindex="0"><code>进程内缓存（Caffeine/本地 Map）  ~50ns–1μs   ← 挡热点与极高 QPS
+        ↓ miss
+分布式缓存（Redis）              ~0.1–1ms    ← 挡绝大多数回源
+        ↓ miss
+数据库 / 上游服务                             ← 只允许极少量到达
+</code></pre><ul>
+<li><strong>本地缓存只放真正的热点</strong>（如大促商品），设短 TTL 或逻辑过期；别把全量数据塞进程内，会导致各实例数据各自为政。</li>
+<li><strong>分布式缓存承载常规流量</strong>：key 设计带业务前缀 + 版本号（上线改 key 结构时不必清库）。</li>
+</ul>
+<h2 id="失效策略ttl-的三个设计点">失效策略：TTL 的三个设计点</h2>
+<ol>
+<li><strong>TTL 加随机抖动</strong>（基础值 ±20%）：从源头避免「同生同死」的批量失效（雪崩的直接诱因，见<a href="../../architecture/cache-avalanche-postmortem/">故障复盘</a>）。</li>
+<li><strong>热点 key 逻辑过期</strong>：不设物理 TTL，由后台任务主动刷新，读到旧值也不回源（数据允许秒级陈旧时）。</li>
+<li><strong>DB 变更主动失效</strong>：写路径删缓存（Cache Aside），而不是更新缓存——避免并发写造成的中间态写脏。</li>
+</ol>
+<h2 id="四大经典故障的防线每个都要单独防">四大经典故障的防线（每个都要单独防）</h2>
+<table>
+  <thead>
+      <tr>
+          <th>故障</th>
+          <th>现象</th>
+          <th>防线</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>雪崩</td>
+          <td>大量 key 同时失效，回源打垮 DB</td>
+          <td>TTL 抖动 + 多级缓存 + 回源限流</td>
+      </tr>
+      <tr>
+          <td>穿透</td>
+          <td>查不存在的 key，永远打 DB</td>
+          <td>空值短缓存 + 布隆过滤器</td>
+      </tr>
+      <tr>
+          <td>击穿</td>
+          <td>单个热点 key 失效瞬间并发回源</td>
+          <td>单飞锁（同 key 只允许一个请求回源）</td>
+      </tr>
+      <tr>
+          <td>热 key</td>
+          <td>单 key 超高 QPS 打爆单节点</td>
+          <td>本地缓存兜底 + key 分片/多副本</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>踩坑记录：一次活动把「单飞锁」做成了「全局限流」，热点 key 请求排队反而把正常流量也拖慢。单飞锁必须<strong>按 key 维度</strong>（分布式锁 + key 粒度），而不是全局一把锁。</p></blockquote>
+<h2 id="一致性接受缓存最终一致但要控制窗口">一致性：接受「缓存最终一致」，但要控制窗口</h2>
+<p>强一致（DB 与缓存实时一致）在分布式下代价极高。务实做法：</p>
+<ul>
+<li>明确业务允许的陈旧窗口（秒级/分钟级），写进方案；</li>
+<li>写路径 Cache Aside + 删除重试（消息队列兜底）；</li>
+<li>定时对账任务修正极少数脏数据——比追求绝对一致便宜一个量级。</li>
+</ul>
+<h2 id="落地清单">落地清单</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 先问「要不要缓存」：命中率、数据变化频率、单机是否够</li>
+<li><input disabled="" type="checkbox"> 三级结构明确每级职责，本地缓存只放热点</li>
+<li><input disabled="" type="checkbox"> TTL 随机抖动；热点 key 逻辑过期 + 异步刷新</li>
+<li><input disabled="" type="checkbox"> 雪崩 / 穿透 / 击穿 / 热 key 四道防线各就各位</li>
+<li><input disabled="" type="checkbox"> 写路径 Cache Aside，删除失败有重试</li>
+<li><input disabled="" type="checkbox"> 缓存命中率、回源 QPS、单 key 并发监控告警</li>
+</ul>
+<p>延伸阅读：<a href="business-architecture-breakdown/">上章 · 业务架构拆解</a>  ·  <a href="../../architecture/cache-avalanche-postmortem/">缓存雪崩故障复盘</a>  ·  <a href="../../tools/">Redis 工具行</a></p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/%E7%BC%93%E5%AD%98/">#缓存</a><a class="tag" href="/growth/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/">#稳定性</a><a class="tag" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">#方法论</a><a class="tag" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/">#架构实战</a></div><nav class="series-nav" aria-label="系列导航">
+      <div class="series-nav__label">系列章节</div>
+      <div class="series-nav__links"><a class="series-nav__link" href="/growth/growth/business-architecture-breakdown/">← 上一章 · 如何做业务架构拆解：从需求输出架构方案</a><span class="series-nav__link series-nav__link--next is-disabled">已是最后一篇</span></div>
+    </nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/growth/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/growth/rag-production/" style="--cover-color: #b8772f" aria-label="RAG 系统从 POC 到生产：完整落地要点">
+    <span class="card__emoji" aria-hidden="true">🔍</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/rag/" style="--chip-color: #b8772f"><span class="chip__text">RAG</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">LLM</span>
+</a><a class="chip" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/" style="--chip-color: #b8772f"><span class="chip__text">AI架构</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/rag-production/">RAG 系统从 POC 到生产：完整落地要点</a></h3><p class="card__summary">检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/knowledge-system/" style="--cover-color: #b8772f" aria-label="工程师知识体系搭建：建立自己的知识树">
+    <span class="card__emoji" aria-hidden="true">🌳</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">个人成长</span>
+</a><a class="chip" href="/growth/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="--chip-color: #b8772f"><span class="chip__text">知识管理</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">方法论</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/knowledge-system/">工程师知识体系搭建：建立自己的知识树</a></h3><p class="card__summary">刷了十年文章还是觉得没积累？问题不在输入量，在「没有根的知识是长不住的」。给出一套从输入到沉淀到调用的知识树方法。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/tech-design-writing/" style="--cover-color: #b8772f" aria-label="如何写技术方案：把想法讲清楚，讲给对的人听">
+    <span class="card__emoji" aria-hidden="true">📝</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/" style="--chip-color: #b8772f"><span class="chip__text">软技能</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/" style="--chip-color: #b8772f"><span class="chip__text">技术方案</span>
+</a><a class="chip" href="/growth/tags/%E6%96%87%E6%A1%A3/" style="--chip-color: #b8772f"><span class="chip__text">文档</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/tech-design-writing/">如何写技术方案：把想法讲清楚，讲给对的人听</a></h3><p class="card__summary">很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

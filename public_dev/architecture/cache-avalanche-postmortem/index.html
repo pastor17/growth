@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一次缓存雪崩的完整复盘：从现象到根因到架构改进 · 架构 · 创业 · 成长</title><meta name="description" content="一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/architecture/cache-avalanche-postmortem/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="一次缓存雪崩的完整复盘：从现象到根因到架构改进">
+<meta property="og:description" content="一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/architecture/cache-avalanche-postmortem/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="故障复盘, 稳定性, 缓存, 架构实战"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-01\",\"description\":\"一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。\",\"headline\":\"一次缓存雪崩的完整复盘：从现象到根因到架构改进\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/architecture/cache-avalanche-postmortem/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/architecture/">架构实战</a><span>/</span>
+      <span>一次缓存雪崩的完整复盘：从现象到根因到架构改进</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #1f6f8b">
+      <div class="article-header__emoji" aria-hidden="true">❄️</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/tags/%E6%95%85%E9%9A%9C%E5%A4%8D%E7%9B%98/" style="--chip-color: #1f6f8b"><span class="chip__text">#故障复盘</span>
+</a><a class="chip" href="/growth/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/" style="--chip-color: #1f6f8b"><span class="chip__text">#稳定性</span>
+</a><a class="chip" href="/growth/tags/%E7%BC%93%E5%AD%98/" style="--chip-color: #1f6f8b"><span class="chip__text">#缓存</span>
+</a><a class="chip" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/" style="--chip-color: #1f6f8b"><span class="chip__text">#架构实战</span>
+</a></div>
+      <h1 class="article-header__title">一次缓存雪崩的完整复盘：从现象到根因到架构改进</h1><p class="article-header__summary">一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-01</span>
+        <span>📝 约 1290 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#现象凌晨的第一波用户全部超时">现象：凌晨的「第一波用户」全部超时</a></li>
+    <li><a href="#时间线节选">时间线（节选）</a></li>
+    <li><a href="#根因分析为什么是雪崩而不是普通的缓存失效">根因分析：为什么是「雪崩」而不是普通的缓存失效？</a></li>
+    <li><a href="#止血动作按顺序">止血动作（按顺序）</a></li>
+    <li><a href="#后续架构改进">后续架构改进</a></li>
+    <li><a href="#如果重来一次我会改什么">如果重来一次，我会改什么</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="现象凌晨的第一波用户全部超时">现象：凌晨的「第一波用户」全部超时</h2>
+<p>事故发生在一次大促预热日的零点刚过。监控上最先报警的是<strong>网关层 5xx 率</strong>从 0.1% 突然冲到 23%，随后<strong>应用层 P99 延迟</strong>从 120ms 飙升到 8 秒，紧接着数据库告警：连接数打满、慢查询堆积。</p>
+<p>第一批受影响的用户，恰恰是冲进活动的「最活跃用户」。这类用户越活跃，越会集中命中同一批热点数据——这为后面的根因埋下了伏笔。</p>
+<h2 id="时间线节选">时间线（节选）</h2>
+<table>
+  <thead>
+      <tr>
+          <th>时间</th>
+          <th>事件</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>00:00</td>
+          <td>大促预热开始，流量按预期爬升</td>
+      </tr>
+      <tr>
+          <td>00:12</td>
+          <td>网关 5xx 突增，P99 开始恶化</td>
+      </tr>
+      <tr>
+          <td>00:14</td>
+          <td>缓存命中率从 95% 跌到 31%</td>
+      </tr>
+      <tr>
+          <td>00:15</td>
+          <td>数据库连接打满，出现雪崩征兆</td>
+      </tr>
+      <tr>
+          <td>00:19</td>
+          <td>决策：全站缓存击穿保护开关打开 + 服务限流收紧</td>
+      </tr>
+      <tr>
+          <td>00:26</td>
+          <td>命中率回升，P99 回到 500ms 内</td>
+      </tr>
+      <tr>
+          <td>00:35</td>
+          <td>业务恢复，进入复盘</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="根因分析为什么是雪崩而不是普通的缓存失效">根因分析：为什么是「雪崩」而不是普通的缓存失效？</h2>
+<p>表面原因是：<strong>一批 key 在同一时刻过期，回源请求同时打到数据库</strong>。但往下挖一层，真正的问题有三个：</p>
+<ol>
+<li><strong>热点 key 集中在同一批</strong>：大促商品的价格、库存、活动文案都存在同一个缓存前缀下，TTL 又设成了相同的 30 分钟。过期时间是从上线那一刻开始算的，所有 key「同生同死」。</li>
+<li><strong>回源没有「单飞」保护</strong>：缓存 miss 后所有请求直接穿透到数据库，没有加分布式锁做单飞，也没有本地短暂兜底。</li>
+<li><strong>数据库侧没有限流缓冲</strong>：慢查询堆积反过来拖垮了正常请求，形成了「缓存 miss → DB 排队 → 更慢 → 更多请求堆积」的正反馈。</li>
+</ol>
+<p>一句话根因：<strong>缓存过期时间设计没有考虑「同时失效」的放大效应，回源路径缺少层层保护的兜底</strong>。</p>
+<h2 id="止血动作按顺序">止血动作（按顺序）</h2>
+<ol>
+<li><strong>先恢复，再定位</strong>：打开缓存穿透保护（null 值短暂缓存 + 单飞锁），收紧网关限流，让流量降下来。</li>
+<li><strong>手动刷缓存</strong>：对热点 key 提前预热，用「过期时间 + 随机抖动」重新写入。</li>
+<li><strong>DB 侧限流</strong>：对回源 SQL 加队列与超时保护，防止慢查询继续堆积。</li>
+</ol>
+<p>15 分钟内业务恢复。恢复后没有立刻散会，而是把时间线、命令、变更记录全部留档。</p>
+<h2 id="后续架构改进">后续架构改进</h2>
+<p><strong>短期（一周内）</strong></p>
+<ul>
+<li>所有缓存 TTL 改为「基础值 + 随机抖动（±20%）」，从源头避免批量同时过期。</li>
+<li>热点 key 识别：对访问频率 top 的 key 不设过期（逻辑过期 + 异步刷新）。</li>
+<li>回源路径统一封装：单飞锁（同 key 只允许一个请求回源）+ null 值短缓存。</li>
+</ul>
+<p><strong>中期（一个迭代内）</strong></p>
+<ul>
+<li>为「回源」增加独立的限流与超时保护，DB 侧按服务设置连接配额。</li>
+<li>新增缓存命中率、回源 QPS、单 key 回源并发三张监控图，命中率跌破阈值自动告警。</li>
+</ul>
+<p><strong>长期（架构层面）</strong></p>
+<ul>
+<li>把「缓存体系」升级为多级：进程内本地缓存（Caffeine）→ 分布式缓存 → DB，本地缓存为热点 key 提供 50ms 级兜底。</li>
+<li>大促前做<strong>故障演练</strong>：直接模拟「缓存全部失效 5 分钟」，验证降级链路真的能扛住。</li>
+</ul>
+<h2 id="如果重来一次我会改什么">如果重来一次，我会改什么</h2>
+<p>事故当天其实有 10 分钟窗口是可以避免全量雪崩的：预热脚本只刷了「价格」没刷「库存前缀」，而告警在命中率刚跌破 80% 时其实就响了——当时值班判断是「预热还没生效」，没有立刻执行降级预案。</p>
+<p><strong>教训</strong>：告警响了就是预案启动条件，不要用「再等等看」赌它自己恢复。这个判断准则我后来写进了团队的故障手册第一条。</p>
+<p>这起事故过去挺久了，但直到现在，每次大促前我还会把这份复盘翻出来过一遍——不是记性差，是因为同类事故往往不是「不知道」，而是「上线那晚恰好没人多想一秒」。</p>
+<p>如果这篇对你有用，故障复盘模板可以直接拿去用：<a href="../../templates/postmortem-template.md">故障复盘模板</a>。排查时用的工具链，我写在<a href="../../tools/">工具栏目</a>里了。</p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/%E6%95%85%E9%9A%9C%E5%A4%8D%E7%9B%98/">#故障复盘</a><a class="tag" href="/growth/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/">#稳定性</a><a class="tag" href="/growth/tags/%E7%BC%93%E5%AD%98/">#缓存</a><a class="tag" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/">#架构实战</a></div><nav class="article-pager"><a class="article-pager__link article-pager__link--next" href="/growth/architecture/architecture-anti-patterns/">架构反模式：我在项目里见过的 7 种错误设计 →</a></nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/architecture/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/architecture/architecture-anti-patterns/" style="--cover-color: #1f6f8b" aria-label="架构反模式：我在项目里见过的 7 种错误设计">
+    <span class="card__emoji" aria-hidden="true">🚫</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/" style="--chip-color: #1f6f8b"><span class="chip__text">架构实战</span>
+</a><a class="chip" href="/growth/tags/%E5%8F%8D%E6%A8%A1%E5%BC%8F/" style="--chip-color: #1f6f8b"><span class="chip__text">反模式</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" style="--chip-color: #1f6f8b"><span class="chip__text">技术选型</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/architecture/architecture-anti-patterns/">架构反模式：我在项目里见过的 7 种错误设计</a></h3><p class="card__summary">微服务全家桶、缓存先行、分布式锁满天飞……7 种高频错误架构设计的症状、代价与识别信号，每一条都来自真实项目。</p><div class="card__meta">
+      <span>架构实战</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

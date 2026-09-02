@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>架构实战 · 架构 · 创业 · 成长</title><meta name="description" content="高并发、稳定性、故障复盘、架构取舍与反模式——只写生产环境真实经验。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/architecture/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="架构实战">
+<meta property="og:description" content="高并发、稳定性、故障复盘、架构取舍与反模式——只写生产环境真实经验。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pastor17.github.io/growth/architecture/">
+<meta name="twitter:card" content="summary"><script type="application/ld+json"></script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><div class="container page-head column-head" style="--col-color: #1f6f8b">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="/growth/">首页</a><span>/</span><span>架构实战</span>
+  </nav>
+  <h1 class="page-title">🏗️ 架构实战</h1><p class="page-subtitle">高并发 · 稳定性 · 故障复盘 · 取舍权衡</p><div class="prose"><p>这个栏目是给想把系统做稳、做明白的后端工程师看的——其实更多是给我自己看的：每踩一个坑就写一篇，省得同一个坑踩第二次。</p>
+<p>这里没有教程腔，只有我在真实项目里遇到的故障、做过的取舍、事后想明白的道理。细节都做了脱敏，哪处要是对不上你熟悉的场景，多半是我故意模糊的。</p>
+<p>常写这几类：</p>
+<ul>
+<li>故障复盘：怎么发现、怎么止血、怎么让同类问题不再发生</li>
+<li>架构取舍：什么时候不上微服务、什么时候放弃性能换可维护性</li>
+<li>反模式与工程化：团队里反复出现的错误设计，规范与流程的琐碎日常</li>
+</ul>
+<p>挖了几个坑还没填完：高并发系统演进实录、一次「拆了又合」的微服务复盘、我遇到过的最离谱的一次线上事故。</p>
+</div></div>
+<div class="container"><div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/architecture/architecture-anti-patterns/" style="--cover-color: #1f6f8b" aria-label="架构反模式：我在项目里见过的 7 种错误设计">
+    <span class="card__emoji" aria-hidden="true">🚫</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/" style="--chip-color: #1f6f8b"><span class="chip__text">架构实战</span>
+</a><a class="chip" href="/growth/tags/%E5%8F%8D%E6%A8%A1%E5%BC%8F/" style="--chip-color: #1f6f8b"><span class="chip__text">反模式</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" style="--chip-color: #1f6f8b"><span class="chip__text">技术选型</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/architecture/architecture-anti-patterns/">架构反模式：我在项目里见过的 7 种错误设计</a></h3><p class="card__summary">微服务全家桶、缓存先行、分布式锁满天飞……7 种高频错误架构设计的症状、代价与识别信号，每一条都来自真实项目。</p><div class="card__meta">
+      <span>架构实战</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/architecture/cache-avalanche-postmortem/" style="--cover-color: #1f6f8b" aria-label="一次缓存雪崩的完整复盘：从现象到根因到架构改进">
+    <span class="card__emoji" aria-hidden="true">❄️</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E6%95%85%E9%9A%9C%E5%A4%8D%E7%9B%98/" style="--chip-color: #1f6f8b"><span class="chip__text">故障复盘</span>
+</a><a class="chip" href="/growth/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/" style="--chip-color: #1f6f8b"><span class="chip__text">稳定性</span>
+</a><a class="chip" href="/growth/tags/%E7%BC%93%E5%AD%98/" style="--chip-color: #1f6f8b"><span class="chip__text">缓存</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/architecture/cache-avalanche-postmortem/">一次缓存雪崩的完整复盘：从现象到根因到架构改进</a></h3><p class="card__summary">一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。</p><div class="card__meta">
+      <span>架构实战</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

@@ -56,4 +56,51 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
+
+  /* 代码块一键复制 */
+  var copyButtons = function () {
+    var pres = document.querySelectorAll("main pre");
+    pres.forEach(function (pre) {
+      if (pre.closest(".code-wrap")) return;
+      var wrap = document.createElement("div");
+      wrap.className = "code-wrap";
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(pre);
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "code-copy";
+      btn.textContent = "复制";
+      btn.setAttribute("aria-label", "复制代码");
+      btn.addEventListener("click", function () {
+        var code = pre.innerText;
+        var done = function () {
+          btn.textContent = "已复制";
+          btn.classList.add("is-copied");
+          setTimeout(function () {
+            btn.textContent = "复制";
+            btn.classList.remove("is-copied");
+          }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(done).catch(function () { fallback(); });
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement("textarea");
+          ta.value = code;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); done(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      });
+      wrap.appendChild(btn);
+    });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", copyButtons);
+  } else {
+    copyButtons();
+  }
 })();

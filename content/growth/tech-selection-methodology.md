@@ -75,4 +75,4 @@ ADR 的价值在三个月后：新同学问「为什么不用 X？」时，你�
 - [ ] 提前写清 POC 通过标准
 - [ ] 决策后 20 分钟内写 ADR
 
-延伸阅读：[架构评审清单](../../templates/architecture-review-checklist.md)  ·  [技术方案文档模板](../../templates/tech-design-template.md)  ·  下章预告：业务架构拆解。
+延伸阅读：[架构评审清单](../../templates/architecture-review-checklist.md)  ·  [技术方案文档模板](../../templates/tech-design-template.md)  ·  下一章《业务架构拆解》已经写好：[去看](business-architecture-breakdown/)

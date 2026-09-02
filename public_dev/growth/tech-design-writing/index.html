@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>如何写技术方案：把想法讲清楚，讲给对的人听 · 架构 · 创业 · 成长</title><meta name="description" content="很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/growth/tech-design-writing/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="如何写技术方案：把想法讲清楚，讲给对的人听">
+<meta property="og:description" content="很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/growth/tech-design-writing/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="软技能, 技术方案, 文档"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-01\",\"description\":\"很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。\",\"headline\":\"如何写技术方案：把想法讲清楚，讲给对的人听\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/growth/tech-design-writing/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/growth/">成长体系</a><span>/</span>
+      <span>如何写技术方案：把想法讲清楚，讲给对的人听</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #b8772f">
+      <div class="article-header__emoji" aria-hidden="true">📝</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/series/softskills/" style="--chip-color: #0e7c66"><span class="chip__text">📚 技术人软技能系列</span>
+</a><a class="chip" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/" style="--chip-color: #b8772f"><span class="chip__text">#软技能</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/" style="--chip-color: #b8772f"><span class="chip__text">#技术方案</span>
+</a><a class="chip" href="/growth/tags/%E6%96%87%E6%A1%A3/" style="--chip-color: #b8772f"><span class="chip__text">#文档</span>
+</a></div>
+      <h1 class="article-header__title">如何写技术方案：把想法讲清楚，讲给对的人听</h1><p class="article-header__summary">很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-01</span>
+        <span>📝 约 959 字</span>
+        <span>⏱️ 约 2 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#技术方案的两种失败">技术方案的两种失败</a></li>
+    <li><a href="#一句话心法">一句话心法</a></li>
+    <li><a href="#方案的骨架90-场景够用">方案的骨架（90% 场景够用）</a></li>
+    <li><a href="#三个常见错误与修正">三个常见错误与修正</a></li>
+    <li><a href="#技术汇报的本质差异">技术汇报的本质差异</a></li>
+    <li><a href="#落地清单">落地清单</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="技术方案的两种失败">技术方案的两种失败</h2>
+<p>我评审过大量技术方案，失败的无外乎两种：</p>
+<p><strong>失败一：写成代码解说</strong>。通篇「我们定义了一个接口、建了三张表」，读完不知道为什么要做这件事。评审人只能追问「所以呢？」——一次评审会开成十次。</p>
+<p><strong>失败二：藏着掖着</strong>。只写方案的优点，风险、代价、被放弃的方案只字不提。评审人问「为什么不用 X？」答不上来，信任当场破产。</p>
+<p>两种失败本质是同一个问题：<strong>把方案当成了「功能说明书」，而不是「决策书」</strong>。</p>
+<h2 id="一句话心法">一句话心法</h2>
+<blockquote>
+<p>技术方案 = 在给定的业务约束下，讲清楚你要做什么决策、为什么这个决策是对的、风险是什么。</p></blockquote>
+<p>评审人要的不是细节，是<strong>判断依据</strong>。他们要能回答三个问题：该不该做？这么做行不行？出了问题怎么办？</p>
+<h2 id="方案的骨架90-场景够用">方案的骨架（90% 场景够用）</h2>
+<ol>
+<li><strong>摘要</strong>：一页讲完。要做什么、为什么做、怎么做、最大风险。这是给「只看一页的人」看的。</li>
+<li><strong>背景与目标</strong>：现状痛点 + 可量化目标。目标必须可衡量（P99 &lt; 200ms、支持 5k QPS）。</li>
+<li><strong>方案对比</strong>：至少两个候选方案，用同一套维度对比（成本 / 复杂度 / 性能 / 可维护性 / 风险）。</li>
+<li><strong>推荐方案的细节</strong>：架构图 + 关键设计点。图自己画，别截图。</li>
+<li><strong>灰度与回滚</strong>：怎么发布、怎么快速回滚。</li>
+<li><strong>风险与待办</strong>：诚实列出不确定的事。</li>
+</ol>
+<p>配套模板见文末链接，可以直接套。</p>
+<h2 id="三个常见错误与修正">三个常见错误与修正</h2>
+<p><strong>错误 1：结论放在最后</strong>
+评审人看到第 3 页还不知道你推荐哪个。<strong>结论先行</strong>：第一页摘要直接给答案。</p>
+<p><strong>错误 2：只列优点不写代价</strong>
+每个方案都写「不足与代价」栏。<strong>主动暴露缺点，是专业感的来源</strong>——评审人自己发现缺点，比你先说出来杀伤力大十倍。</p>
+<p><strong>错误 3：拿 demo 当证据</strong>
+「我本地跑通了」不是方案依据。POC 数据、压测结果、真实流量回放才是。（选型方法论见《后端架构落地教程》第 1 章）</p>
+<h2 id="技术汇报的本质差异">技术汇报的本质差异</h2>
+<p>对内评审、向上汇报、对外分享，说的是同一件事，但组织方式完全不同：</p>
+<ul>
+<li><strong>对内评审</strong>：讲风险和取舍，同行要帮你挑毛病。</li>
+<li><strong>向上汇报</strong>：讲价值和影响，老板只关心「投入产出和风险」。</li>
+<li><strong>对外分享</strong>：讲方法和教训，听众要能带走可复用的东西。</li>
+</ul>
+<p>我见过太多人拿「对内评审的讲法」去做向上汇报，讲了一堆技术细节，老板一脸茫然——不是老板不懂技术，是你没讲他要听的那一层。</p>
+<h2 id="落地清单">落地清单</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 第一页有结论（摘要四要素齐全）</li>
+<li><input disabled="" type="checkbox"> 目标可量化，非目标写清楚</li>
+<li><input disabled="" type="checkbox"> 至少两个方案，同一维度对比</li>
+<li><input disabled="" type="checkbox"> 主动列出风险与代价</li>
+<li><input disabled="" type="checkbox"> 架构图自己画</li>
+<li><input disabled="" type="checkbox"> 给「只看摘要的人」也能做决定</li>
+</ul>
+<p>延伸阅读：<a href="../../templates/tech-design-template.md">技术方案文档模板</a>  ·  <a href="../../templates/architecture-review-checklist.md">架构评审清单</a></p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/">#软技能</a><a class="tag" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/">#技术方案</a><a class="tag" href="/growth/tags/%E6%96%87%E6%A1%A3/">#文档</a></div></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/growth/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/growth/rag-production/" style="--cover-color: #b8772f" aria-label="RAG 系统从 POC 到生产：完整落地要点">
+    <span class="card__emoji" aria-hidden="true">🔍</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/rag/" style="--chip-color: #b8772f"><span class="chip__text">RAG</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">LLM</span>
+</a><a class="chip" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/" style="--chip-color: #b8772f"><span class="chip__text">AI架构</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/rag-production/">RAG 系统从 POC 到生产：完整落地要点</a></h3><p class="card__summary">检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/knowledge-system/" style="--cover-color: #b8772f" aria-label="工程师知识体系搭建：建立自己的知识树">
+    <span class="card__emoji" aria-hidden="true">🌳</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">个人成长</span>
+</a><a class="chip" href="/growth/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="--chip-color: #b8772f"><span class="chip__text">知识管理</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">方法论</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/knowledge-system/">工程师知识体系搭建：建立自己的知识树</a></h3><p class="card__summary">刷了十年文章还是觉得没积累？问题不在输入量，在「没有根的知识是长不住的」。给出一套从输入到沉淀到调用的知识树方法。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/career-path-map/" style="--cover-color: #b8772f" aria-label="技术人成长路径全景：阶段能力、瓶颈与常见误区">
+    <span class="card__emoji" aria-hidden="true">🧭</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%81%8C%E4%B8%9A%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">职业成长</span>
+</a><a class="chip" href="/growth/tags/%E6%88%90%E9%95%BF%E8%B7%AF%E5%BE%84/" style="--chip-color: #b8772f"><span class="chip__text">成长路径</span>
+</a><a class="chip" href="/growth/tags/%E6%99%8B%E5%8D%87/" style="--chip-color: #b8772f"><span class="chip__text">晋升</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/career-path-map/">技术人成长路径全景：阶段能力、瓶颈与常见误区</a></h3><p class="card__summary">从初级到高级、架构师、管理者再到创业，每个阶段的核心能力、考核标准与常见瓶颈，拒绝无效努力。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

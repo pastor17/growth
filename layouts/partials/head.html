@@ -20,6 +20,18 @@
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta name="twitter:card" content="summary">
+{{- with .Params.tags -}}
+<meta name="keywords" content="{{ delimit . ", " }}">
+{{- end -}}
+{{- $ld := "" -}}
+{{- if .IsHome -}}
+  {{- $ld = (dict "@context" "https://schema.org" "@type" "WebSite" "name" site.Title "url" site.Home.Permalink "description" site.Params.description "author" (dict "@type" "Person" "name" site.Params.author "url" (site.Params.github | default site.Home.Permalink))) | jsonify -}}
+{{- else if .IsPage -}}
+  {{- $ld = (dict "@context" "https://schema.org" "@type" "Article" "headline" .Title "description" $desc "datePublished" (.Date.Format "2006-01-02") "inLanguage" "zh-CN" "url" .Permalink "author" (dict "@type" "Person" "name" (.Params.author | default site.Params.author)) "publisher" (dict "@type" "Person" "name" site.Params.author)) | jsonify -}}
+{{- end -}}
+{{- with $ld -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" . | safeHTML }}
+{{- end -}}
 {{- $css := resources.Get "css/main.css" -}}
 {{- if not hugo.IsServer }}{{ $css = $css | minify | fingerprint }}{{ end -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">

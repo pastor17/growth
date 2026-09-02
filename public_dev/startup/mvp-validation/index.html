@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>独立开发者如何验证需求与付费意愿：先卖后做 · 架构 · 创业 · 成长</title><meta name="description" content="「先写代码再验证」是技术人创业失败的第一因。给出从想法到付费证据的五步验证法与可落地的行动清单。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/startup/mvp-validation/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="独立开发者如何验证需求与付费意愿：先卖后做">
+<meta property="og:description" content="「先写代码再验证」是技术人创业失败的第一因。给出从想法到付费证据的五步验证法与可落地的行动清单。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/startup/mvp-validation/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="创业复盘, 独立项目, 商业思考, MVP"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-02\",\"description\":\"「先写代码再验证」是技术人创业失败的第一因。给出从想法到付费证据的五步验证法与可落地的行动清单。\",\"headline\":\"独立开发者如何验证需求与付费意愿：先卖后做\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/startup/mvp-validation/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/startup/">创业复盘</a><span>/</span>
+      <span>独立开发者如何验证需求与付费意愿：先卖后做</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #c0392b">
+      <div class="article-header__emoji" aria-hidden="true">🧪</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/tags/%E5%88%9B%E4%B8%9A%E5%A4%8D%E7%9B%98/" style="--chip-color: #c0392b"><span class="chip__text">#创业复盘</span>
+</a><a class="chip" href="/growth/tags/%E7%8B%AC%E7%AB%8B%E9%A1%B9%E7%9B%AE/" style="--chip-color: #c0392b"><span class="chip__text">#独立项目</span>
+</a><a class="chip" href="/growth/tags/%E5%95%86%E4%B8%9A%E6%80%9D%E8%80%83/" style="--chip-color: #c0392b"><span class="chip__text">#商业思考</span>
+</a><a class="chip" href="/growth/tags/mvp/" style="--chip-color: #c0392b"><span class="chip__text">#MVP</span>
+</a></div>
+      <h1 class="article-header__title">独立开发者如何验证需求与付费意愿：先卖后做</h1><p class="article-header__summary">「先写代码再验证」是技术人创业失败的第一因。给出从想法到付费证据的五步验证法与可落地的行动清单。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-02</span>
+        <span>📝 约 1017 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么先做出来再说几乎总是错">为什么「先做出来再说」几乎总是错</a></li>
+    <li><a href="#五步验证法每一步都比写代码便宜">五步验证法（每一步都比写代码便宜）</a>
+      <ul>
+        <li><a href="#第-1-步把想法翻译成可证伪假设">第 1 步：把「想法」翻译成「可证伪假设」</a></li>
+        <li><a href="#第-2-步先做人肉版验证不做产品">第 2 步：先做「人肉版」验证，不做产品</a></li>
+        <li><a href="#第-3-步做预购页--落地页验证需求强度">第 3 步：做「预购页 / 落地页」验证需求强度</a></li>
+        <li><a href="#第-4-步用时间盒做最小产品验证留存">第 4 步：用「时间盒」做最小产品验证留存</a></li>
+        <li><a href="#第-5-步写验证复盘决定-go--no-go--转向">第 5 步：写验证复盘，决定 go / no-go / 转向</a></li>
+      </ul>
+    </li>
+    <li><a href="#判断信号表什么算通过">判断信号表（什么算通过）</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <blockquote>
+<p>声明：本文承接<a href="technical-founder-pitfalls/">《技术人创业最容易踩的 6 个坑》</a>——那篇讲坑，这篇给方法：<strong>如何在你写第一行业务代码之前，拿到「有人愿意为此付钱」的证据</strong>。</p></blockquote>
+<h2 id="为什么先做出来再说几乎总是错">为什么「先做出来再说」几乎总是错</h2>
+<p>技术人最容易犯的错，是把「我能做出来」当成「有人需要」。但市场只认一个信号：<strong>有没有人愿意掏钱（或付出真实代价）</strong>。点赞、试用、口头说「挺好」都不是信号——它们是礼貌。</p>
+<p>验证的本质：<strong>用最小成本制造一个「不掏钱就得不到」的测试</strong>，看真实用户的行为，而不是听他们的态度。</p>
+<h2 id="五步验证法每一步都比写代码便宜">五步验证法（每一步都比写代码便宜）</h2>
+<h3 id="第-1-步把想法翻译成可证伪假设">第 1 步：把「想法」翻译成「可证伪假设」</h3>
+<ul>
+<li>想法：做个给独立开发者用的账单工具。</li>
+<li>假设：<strong>有 30+ 独立开发者每月为「自动合并多渠道收入账单」付费 ¥19 以上</strong>。</li>
+<li>可证伪 = 有数字、有对象、有截止时间（如 6 周内 30 人）。<strong>写不出可证伪假设，说明你还不知道自己到底在赌什么。</strong></li>
+</ul>
+<h3 id="第-2-步先做人肉版验证不做产品">第 2 步：先做「人肉版」验证，不做产品</h3>
+<ul>
+<li>用手动流程 + 现成工具（<a href="../../tools/">创业工具</a>里的 Notion/表单/收款）模拟核心服务：人工帮你记账/汇总，收一次真实费用。</li>
+<li>这一步的产出不是系统，是<strong>付费行为样本</strong>：谁真的付了、付完为什么没走、卡在哪。</li>
+</ul>
+<h3 id="第-3-步做预购页--落地页验证需求强度">第 3 步：做「预购页 / 落地页」验证需求强度</h3>
+<ul>
+<li>一个页面讲清「解决什么、怎么解决、价格」，CTA 是<strong>预购/排队付费</strong>（收意向金或订金）。</li>
+<li>关键指标：<strong>真实付费转化率</strong>（不是留邮箱率）。留邮箱是兴趣，付定金是承诺。</li>
+<li>没流量时先做第 2 步，别用预购页安慰自己。</li>
+</ul>
+<h3 id="第-4-步用时间盒做最小产品验证留存">第 4 步：用「时间盒」做最小产品验证留存</h3>
+<ul>
+<li>只做核心场景的最小闭环，<strong>用手动操作补非核心环节</strong>（人工发货、人工客服、人工对账都行）。</li>
+<li>时间盒 2–4 周，只验证一个指标：<strong>付费用户的次周留存</strong>（回访/复购/使用频次）。</li>
+<li>别加登录、权限、多团队这些「像个正经产品」的功能——它们全是验证噪音。</li>
+</ul>
+<h3 id="第-5-步写验证复盘决定-go--no-go--转向">第 5 步：写验证复盘，决定 go / no-go / 转向</h3>
+<ul>
+<li>用<a href="../../templates/monthly-review-template.md">月度复盘模板</a>的思路写：假设、证据、差距、根因。</li>
+<li>三个出口：<strong>go</strong>（付费 + 留存都过线）、<strong>no-go</strong>（没有付费证据——恭喜，你用几千块避免了几个月的时间损失）、<strong>转向</strong>（有人付费但买的是另一个点——去验证新假设）。</li>
+</ul>
+<h2 id="判断信号表什么算通过">判断信号表（什么算通过）</h2>
+<table>
+  <thead>
+      <tr>
+          <th>信号</th>
+          <th>强证据</th>
+          <th>弱证据</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>需求</td>
+          <td>有人付定金/预购</td>
+          <td>有人收藏/点赞</td>
+      </tr>
+      <tr>
+          <td>付费</td>
+          <td>首单真实成交</td>
+          <td>说「上线我会买」</td>
+      </tr>
+      <tr>
+          <td>留存</td>
+          <td>次周回来用</td>
+          <td>注册后没再打开</td>
+      </tr>
+      <tr>
+          <td>口碑</td>
+          <td>主动转介绍/催更新</td>
+          <td>好评但不活跃</td>
+      </tr>
+  </tbody>
+</table>
+<p>这套方法是我交了学费之后才总结出来的——最早那个项目，如果当初肯先做第二步而不是直接写代码，至少能省下半年时间。希望读到这里的你能少走这段弯路。</p>
+<p>更多的坑在<a href="technical-founder-pitfalls/">上一篇：技术人创业最容易踩的坑</a>，复盘模板在<a href="../../templates/monthly-review-template.md">资源页</a>。</p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/%E5%88%9B%E4%B8%9A%E5%A4%8D%E7%9B%98/">#创业复盘</a><a class="tag" href="/growth/tags/%E7%8B%AC%E7%AB%8B%E9%A1%B9%E7%9B%AE/">#独立项目</a><a class="tag" href="/growth/tags/%E5%95%86%E4%B8%9A%E6%80%9D%E8%80%83/">#商业思考</a><a class="tag" href="/growth/tags/mvp/">#MVP</a></div><nav class="article-pager"><a class="article-pager__link article-pager__link--next" href="/growth/startup/technical-founder-pitfalls/">技术人创业最容易踩的 6 个坑（含一个失败项目的复盘） →</a></nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/startup/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/startup/technical-founder-pitfalls/" style="--cover-color: #c0392b" aria-label="技术人创业最容易踩的 6 个坑（含一个失败项目的复盘）">
+    <span class="card__emoji" aria-hidden="true">🕳️</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E5%88%9B%E4%B8%9A%E5%A4%8D%E7%9B%98/" style="--chip-color: #c0392b"><span class="chip__text">创业复盘</span>
+</a><a class="chip" href="/growth/tags/%E7%8B%AC%E7%AB%8B%E9%A1%B9%E7%9B%AE/" style="--chip-color: #c0392b"><span class="chip__text">独立项目</span>
+</a><a class="chip" href="/growth/tags/%E5%95%86%E4%B8%9A%E6%80%9D%E8%80%83/" style="--chip-color: #c0392b"><span class="chip__text">商业思考</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/startup/technical-founder-pitfalls/">技术人创业最容易踩的 6 个坑（含一个失败项目的复盘）</a></h3><p class="card__summary">从技术到商业，最大的转变不是学商业知识，而是放下技术本位思维。6 个真实踩过的坑与一个失败项目的复盘。</p><div class="card__meta">
+      <span>创业复盘</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

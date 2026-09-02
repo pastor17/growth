@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG 系统从 POC 到生产：完整落地要点 · 架构 · 创业 · 成长</title><meta name="description" content="检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/growth/rag-production/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="RAG 系统从 POC 到生产：完整落地要点">
+<meta property="og:description" content="检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/growth/rag-production/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="RAG, LLM, AI架构, 幻觉"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-02\",\"description\":\"检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。\",\"headline\":\"RAG 系统从 POC 到生产：完整落地要点\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/growth/rag-production/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/growth/">成长体系</a><span>/</span>
+      <span>RAG 系统从 POC 到生产：完整落地要点</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #b8772f">
+      <div class="article-header__emoji" aria-hidden="true">🔍</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/series/engineering-ai/" style="--chip-color: #5b5bd6"><span class="chip__text">📚 AI 工程落地教程</span>
+</a><a class="chip" href="/growth/tags/rag/" style="--chip-color: #b8772f"><span class="chip__text">#RAG</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">#LLM</span>
+</a><a class="chip" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/" style="--chip-color: #b8772f"><span class="chip__text">#AI架构</span>
+</a><a class="chip" href="/growth/tags/%E5%B9%BB%E8%A7%89/" style="--chip-color: #b8772f"><span class="chip__text">#幻觉</span>
+</a></div>
+      <h1 class="article-header__title">RAG 系统从 POC 到生产：完整落地要点</h1><p class="article-header__summary">检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-02</span>
+        <span>📝 约 1362 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#先泼一盆冷水rag-的-demo-和生产的距离">先泼一盆冷水：RAG 的 demo 和生产的距离</a></li>
+    <li><a href="#检索链路四个被低估的环节">检索链路：四个被低估的环节</a></li>
+    <li><a href="#幻觉治理先认清幻觉的三个来源">幻觉治理：先认清幻觉的三个来源</a></li>
+    <li><a href="#生产级架构缓存限流与降级">生产级架构：缓存、限流与降级</a></li>
+    <li><a href="#成本账为什么必须算每次问答的钱">成本账：为什么必须算「每次问答」的钱</a></li>
+    <li><a href="#落地清单">落地清单</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="先泼一盆冷水rag-的-demo-和生产的距离">先泼一盆冷水：RAG 的 demo 和生产的距离</h2>
+<p>Demo 阶段的 RAG 都很好：随便找几篇文档灌进去，问什么都能「答」出来。但一上生产就露馅——答非所问、编造数据、引用错文件、用户问法一变就崩。</p>
+<p>我在项目里反复看到同一个规律：<strong>知识库类项目 80% 的失败，不是模型不行，是检索链路不行</strong>。检索决定上限，生成只是把检索到的内容翻译成人话。</p>
+<h2 id="检索链路四个被低估的环节">检索链路：四个被低估的环节</h2>
+<p><strong>1. 切分（Chunking）不是「按字数切」</strong></p>
+<p>默认按 500 字硬切，会把一个完整的业务规则从中间劈开，召回时上下文残缺。踩坑后的做法：</p>
+<ul>
+<li>优先按<strong>语义边界</strong>切：Markdown 标题、段落、表格行。</li>
+<li>为每个 chunk 保留<strong>父文档引用</strong>：召回后回带整节内容，而不是孤零零一段。</li>
+<li>表格、代码片段单独处理——向量化表格行效果很差，往往需要「行 + 表头」拼接。</li>
+</ul>
+<p><strong>2. 召回（Retrieval）不只是向量搜索</strong></p>
+<p>向量搜索对「同义改写」友好，但对「精确术语、编号、条件判断」很弱。生产做法是<strong>混合检索</strong>：向量召回 + 关键词/BM25 召回，用 RRF（倒数排名融合）合并，再按业务规则重排。</p>
+<blockquote>
+<p>踩坑记录：用户问「报销超过 5000 元需要什么流程」，向量只召回「报销流程」相关段落，但「5000 元阈值」这个精确条件全靠 BM25 命中。没有混合检索，这类问题必错。</p></blockquote>
+<p><strong>3. 重排（Rerank）</strong></p>
+<p>top-50 粗召回后用一个重排模型精排到 top-5，召回质量能明显提升。这一步很多人跳过，却常常是「能用」和「好用」的分界线。</p>
+<p><strong>4. 引用可验证</strong></p>
+<p>生产环境必须给用户「引用来源」，否则答错了用户无法自查，信任崩塌。引用还要<strong>精确到段落</strong>，而不是「来自 3 号文档」。</p>
+<h2 id="幻觉治理先认清幻觉的三个来源">幻觉治理：先认清幻觉的三个来源</h2>
+<ul>
+<li><strong>检索不到</strong>：库里根本没有答案 → 应该让模型明确说「不知道」，而不是硬编。我在提示词里强制输出「未找到相关内容」分支，配合答案置信度阈值。</li>
+<li><strong>检索到但拼错了</strong>：多文档信息冲突 → 需要文档时效性排序、权威性加权。</li>
+<li><strong>模型「太想答」</strong>：prompt 与温度设置问题 → 业务场景温度拉低（≤0.2），答案格式约束为 JSON 便于校验。</li>
+</ul>
+<blockquote>
+<p>核心观点：<strong>幻觉治理的第一优先级不是模型，是「让模型有机会说不知道」</strong>。一个允许拒绝回答的系统，比一个硬答的系统可信得多。</p></blockquote>
+<h2 id="生产级架构缓存限流与降级">生产级架构：缓存、限流与降级</h2>
+<p>把大模型当后端组件，就要按后端组件的标准对待：</p>
+<ul>
+<li><strong>缓存</strong>：完全相同的 query 直接命中缓存；语义相似 query 用 embedding 相似度做短时缓存。token 成本能省 30%–50%。</li>
+<li><strong>限流</strong>：按用户 + 按全局双层限流，防止爬虫和刷量把账单打爆。</li>
+<li><strong>降级</strong>：模型超时/不可用时，降级为「仅检索，返回原文片段」，而不是报错。用户能拿到原文，体验远好于 500。</li>
+<li><strong>可观测性</strong>：记录每次问答的 query、命中 chunk、token 用量、延迟与「拒绝回答」率——这是调优的唯一依据。（详见系列后续章节）</li>
+</ul>
+<h2 id="成本账为什么必须算每次问答的钱">成本账：为什么必须算「每次问答」的钱</h2>
+<p>很多人只算了模型单价，没算清楚：</p>
+<pre tabindex="0"><code>单次问答成本 = 输入 tokens × 输入单价 + 输出 tokens × 输出单价
+</code></pre><p>RAG 的输入含检索上下文，经常是 3000–5000 tokens；一次用户对话平均 2–3 轮。一个日活 1 万的场景，月成本可以轻松到五位数。<strong>缓存的收益在这里不是优化，是生存问题。</strong></p>
+<h2 id="落地清单">落地清单</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 切分按语义边界，保留父文档引用</li>
+<li><input disabled="" type="checkbox"> 混合检索（向量 + BM25）+ RRF 融合</li>
+<li><input disabled="" type="checkbox"> 接入重排模型精排 top-5</li>
+<li><input disabled="" type="checkbox"> 答案带段落级引用</li>
+<li><input disabled="" type="checkbox"> 支持「拒绝回答」分支与置信度阈值</li>
+<li><input disabled="" type="checkbox"> query 缓存 + 双层限流 + 降级为原文返回</li>
+<li><input disabled="" type="checkbox"> 记录全链路可观测日志</li>
+<li><input disabled="" type="checkbox"> 上线前用真实业务问题集跑一遍准确率基线</li>
+</ul>
+<p>延伸阅读：<a href="../../templates/ai-poc-checklist.md">AI 项目 POC 评估清单</a>  ·  工具见 <a href="../../tools/">工具与工作流</a></p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/rag/">#RAG</a><a class="tag" href="/growth/tags/llm/">#LLM</a><a class="tag" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/">#AI架构</a><a class="tag" href="/growth/tags/%E5%B9%BB%E8%A7%89/">#幻觉</a></div><nav class="series-nav" aria-label="系列导航">
+      <div class="series-nav__label">系列章节</div>
+      <div class="series-nav__links"><span class="series-nav__link is-disabled">已是最前一篇</span><a class="series-nav__link series-nav__link--next" href="/growth/growth/llm-private-deploy/">私有化推理部署：vLLM 选型、算力评估与扩缩容 · 下一章 →</a></div>
+    </nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/growth/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/growth/knowledge-system/" style="--cover-color: #b8772f" aria-label="工程师知识体系搭建：建立自己的知识树">
+    <span class="card__emoji" aria-hidden="true">🌳</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">个人成长</span>
+</a><a class="chip" href="/growth/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="--chip-color: #b8772f"><span class="chip__text">知识管理</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">方法论</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/knowledge-system/">工程师知识体系搭建：建立自己的知识树</a></h3><p class="card__summary">刷了十年文章还是觉得没积累？问题不在输入量，在「没有根的知识是长不住的」。给出一套从输入到沉淀到调用的知识树方法。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/tech-design-writing/" style="--cover-color: #b8772f" aria-label="如何写技术方案：把想法讲清楚，讲给对的人听">
+    <span class="card__emoji" aria-hidden="true">📝</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/" style="--chip-color: #b8772f"><span class="chip__text">软技能</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/" style="--chip-color: #b8772f"><span class="chip__text">技术方案</span>
+</a><a class="chip" href="/growth/tags/%E6%96%87%E6%A1%A3/" style="--chip-color: #b8772f"><span class="chip__text">文档</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/tech-design-writing/">如何写技术方案：把想法讲清楚，讲给对的人听</a></h3><p class="card__summary">很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/career-path-map/" style="--cover-color: #b8772f" aria-label="技术人成长路径全景：阶段能力、瓶颈与常见误区">
+    <span class="card__emoji" aria-hidden="true">🧭</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%81%8C%E4%B8%9A%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">职业成长</span>
+</a><a class="chip" href="/growth/tags/%E6%88%90%E9%95%BF%E8%B7%AF%E5%BE%84/" style="--chip-color: #b8772f"><span class="chip__text">成长路径</span>
+</a><a class="chip" href="/growth/tags/%E6%99%8B%E5%8D%87/" style="--chip-color: #b8772f"><span class="chip__text">晋升</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/career-path-map/">技术人成长路径全景：阶段能力、瓶颈与常见误区</a></h3><p class="card__summary">从初级到高级、架构师、管理者再到创业，每个阶段的核心能力、考核标准与常见瓶颈，拒绝无效努力。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

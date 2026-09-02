@@ -67,10 +67,13 @@
 
       {{ partial "series-nav.html" . }}
 
+      {{- /* 系列文章已有系列内导航，不再重复渲染栏目内上下篇 */ -}}
+      {{- if not .Params.series -}}
       <nav class="article-pager">
         {{- with .PrevInSection -}}<a class="article-pager__link" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{- end -}}
         {{- with .NextInSection -}}<a class="article-pager__link article-pager__link--next" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{- end -}}
       </nav>
+      {{- end -}}
     </footer>
   </div>
 </article>

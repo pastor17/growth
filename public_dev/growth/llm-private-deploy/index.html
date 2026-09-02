@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>私有化推理部署：vLLM 选型、算力评估与扩缩容 · 架构 · 创业 · 成长</title><meta name="description" content="什么时候必须私有化、什么时候调 API 更划算？算力怎么估、vLLM 怎么调、流量上来怎么扩——附完整判断表与踩坑。">
+<meta name="author" content="diunilaomei">
+<link rel="canonical" href="https://pastor17.github.io/growth/growth/llm-private-deploy/">
+<link rel="icon" href="/growth/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1f6f8b">
+<meta property="og:site_name" content="架构 · 创业 · 成长">
+<meta property="og:title" content="私有化推理部署：vLLM 选型、算力评估与扩缩容">
+<meta property="og:description" content="什么时候必须私有化、什么时候调 API 更划算？算力怎么估、vLLM 怎么调、流量上来怎么扩——附完整判断表与踩坑。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pastor17.github.io/growth/growth/llm-private-deploy/">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="LLM, 私有化部署, vLLM, 成本"><script type="application/ld+json">"{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"author\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"datePublished\":\"2026-09-02\",\"description\":\"什么时候必须私有化、什么时候调 API 更划算？算力怎么估、vLLM 怎么调、流量上来怎么扩——附完整判断表与踩坑。\",\"headline\":\"私有化推理部署：vLLM 选型、算力评估与扩缩容\",\"inLanguage\":\"zh-CN\",\"publisher\":{\"@type\":\"Person\",\"name\":\"diunilaomei\"},\"url\":\"https://pastor17.github.io/growth/growth/llm-private-deploy/\"}"</script><link rel="stylesheet" href="/growth/css/main.min.517fc0ccde51486332fd1586d7f787efff08584469f2aff38f4af59b26a2c4b3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a><header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/growth/">
+      <span class="brand__logo" aria-hidden="true">🧱</span>
+      <span class="brand__text">
+        <strong>架构 · 创业 · 成长</strong>
+        <small>专注大规模系统架构 · 互联网连续创业者 · 技术人 …</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="/growth/">首页</a>
+      <a href="/growth/architecture/">架构实战</a>
+      <a href="/growth/ai/">AI 专题</a>
+      <a href="/growth/tools/">工具</a>
+      <a href="/growth/growth/">成长体系</a>
+      <a href="/growth/startup/">创业复盘</a>
+      <a href="/growth/projects/">项目作品</a>
+      <a href="/growth/about/">关于</a>
+    </nav>
+  </div>
+</header>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <main id="main" class="site-main"><article class="article">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="/growth/">首页</a><span>/</span>
+      <a href="/growth/growth/">成长体系</a><span>/</span>
+      <span>私有化推理部署：vLLM 选型、算力评估与扩缩容</span>
+    </nav>
+
+    <header class="article-header" style="--col-color: #b8772f">
+      <div class="article-header__emoji" aria-hidden="true">⚙️</div>
+      <div class="article-header__badges"><a class="chip" href="/growth/series/engineering-ai/" style="--chip-color: #5b5bd6"><span class="chip__text">📚 AI 工程落地教程</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">#LLM</span>
+</a><a class="chip" href="/growth/tags/%E7%A7%81%E6%9C%89%E5%8C%96%E9%83%A8%E7%BD%B2/" style="--chip-color: #b8772f"><span class="chip__text">#私有化部署</span>
+</a><a class="chip" href="/growth/tags/vllm/" style="--chip-color: #b8772f"><span class="chip__text">#vLLM</span>
+</a><a class="chip" href="/growth/tags/%E6%88%90%E6%9C%AC/" style="--chip-color: #b8772f"><span class="chip__text">#成本</span>
+</a></div>
+      <h1 class="article-header__title">私有化推理部署：vLLM 选型、算力评估与扩缩容</h1><p class="article-header__summary">什么时候必须私有化、什么时候调 API 更划算？算力怎么估、vLLM 怎么调、流量上来怎么扩——附完整判断表与踩坑。</p><div class="article-header__meta">
+        <span>✍️ diunilaomei</span>
+        <span>📅 2026-09-02</span>
+        <span>📝 约 1037 字</span>
+        <span>⏱️ 约 3 分钟</span>
+      </div>
+    </header><details class="toc">
+      <summary>📑 章节目录</summary>
+      <div class="toc__body"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#第一问私有化还是调-api先算账再谈技术">第一问：私有化还是调 API？（先算账，再谈技术）</a></li>
+    <li><a href="#算力评估一张表估出要几张卡">算力评估：一张表估出要几张卡</a></li>
+    <li><a href="#vllm-部署的三个关键配置踩坑实录">vLLM 部署的三个关键配置（踩坑实录）</a></li>
+    <li><a href="#扩缩容推理是并发敏感不是qps-敏感">扩缩容：推理是「并发敏感」不是「QPS 敏感」</a></li>
+    <li><a href="#落地清单">落地清单</a></li>
+  </ul>
+</nav></div>
+    </details><div class="article-tools" aria-label="阅读工具">
+      <span class="article-tools__label">字号</span>
+      <button class="article-tools__btn" id="fontDown" type="button" aria-label="减小字号">A−</button>
+      <button class="article-tools__btn" id="fontReset" type="button" aria-label="恢复标准字号">标准</button>
+      <button class="article-tools__btn" id="fontUp" type="button" aria-label="增大字号">A＋</button>
+      <button class="article-tools__btn article-tools__btn--top" id="backToTop" type="button" aria-label="回到顶部">↑ 回到顶部</button>
+    </div>
+
+    <div class="article-content" id="articleBody">
+      <h2 id="第一问私有化还是调-api先算账再谈技术">第一问：私有化还是调 API？（先算账，再谈技术）</h2>
+<p>私有化是手段不是目的。判断表（按我实际项目的口径）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>选择</th>
+          <th>理由</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>数据不能出域（合规硬要求）</td>
+          <td>私有化</td>
+          <td>没有别的选项，只比成本怎么摊</td>
+      </tr>
+      <tr>
+          <td>数据可出域，月 token 成本可控</td>
+          <td>调 API</td>
+          <td>维护成本、迭代速度全面占优</td>
+      </tr>
+      <tr>
+          <td>推理量极大、延迟敏感</td>
+          <td>私有化</td>
+          <td>API 费用曲线穿过自建成本线时（通常量级很大才成立）</td>
+      </tr>
+      <tr>
+          <td>团队没有 GPU 运维经验</td>
+          <td>先调 API</td>
+          <td>GPU 集群排障是专业活，别用业务期试错</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>关键认知：<strong>私有化省的是「边际 token 成本」，花的是「固定成本 + 人力 + 迭代速度」</strong>。很多团队私有化后才发现：自建省的钱 &lt; 多养的运维与卡死的迭代。算账公式：<code>自建月成本 = 机器折旧 + 电费机房租 + 运维人力分摊</code>，对比 <code>API 月账单 × 1.2（buffer）</code>。</p></blockquote>
+<h2 id="算力评估一张表估出要几张卡">算力评估：一张表估出要几张卡</h2>
+<p>粗估公式（以 7B–70B 开源模型为例，精度受 KV Cache 与并发影响）：</p>
+<pre tabindex="0"><code>显存 ≈ 参数量 × 2字节(fp16) × 1.2(KV/激活buffer) + 额外推理buffer
+单卡吞吐 ≈ 以实测为准（别信官网数字，压自己业务的 prompt 分布）
+</code></pre><p><strong>务实流程</strong>：</p>
+<ol>
+<li>先拿业务真实 prompt 样本在目标模型上压测（工具见 <a href="../../tools/">vLLM 工具行</a>），测出「单卡 QPS / 并发 / P95」；</li>
+<li>按峰值并发的 2 倍冗余倒推卡数；</li>
+<li>别一上来买齐，<strong>先租后买 / 混部验证</strong>。</li>
+</ol>
+<h2 id="vllm-部署的三个关键配置踩坑实录">vLLM 部署的三个关键配置（踩坑实录）</h2>
+<ul>
+<li><strong><code>--max-model-len</code> 别照抄默认</strong>：默认值往往偏大，白白占掉 KV Cache 显存。按业务最大输入+输出估算（如 8k），吞吐可能直接翻倍。</li>
+<li><strong><code>--gpu-memory-utilization</code> 调到 0.85–0.92</strong>：默认 0.9 附近，但多卡时注意留给调度器余量，调满会 OOM。</li>
+<li><strong><code>--enable-prefix-caching</code> 该开就开</strong>：RAG 场景长公共前缀命中缓存后，首 token 延迟与吞吐改善明显；代价是显存占用上升，需实测平衡。</li>
+</ul>
+<blockquote>
+<p>坑：一次升级 vLLM 大版本后，<code>--quantization</code> 参数改名导致服务起不来——<strong>生产环境锁版本，升级走小版本灰度</strong>，别追新。</p></blockquote>
+<h2 id="扩缩容推理是并发敏感不是qps-敏感">扩缩容：推理是「并发敏感」不是「QPS 敏感」</h2>
+<p>推理服务扩缩容要看<strong>并发与排队</strong>，不是单纯 QPS：</p>
+<ul>
+<li>配好<strong>请求队列 + 超时 + 排队告警</strong>；队列深度超阈值先降级（见本系列后续《AI 成本控制》章节），而不是无限加卡。</li>
+<li>入口层做<strong>模型路由</strong>：简单请求走小模型/缓存，复杂任务才上大模型——多数系统 70% 流量用不着最强模型。</li>
+<li>弹性扩缩按「队列深度」而非 CPU：GPU 利用率高不一定代表健康，看排队延迟才准。</li>
+</ul>
+<h2 id="落地清单">落地清单</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 用算账公式对比自建 vs API，结论写进 ADR</li>
+<li><input disabled="" type="checkbox"> 业务真实 prompt 压测，测出单卡 QPS/P95，按 2 倍冗余倒推卡数</li>
+<li><input disabled="" type="checkbox"> 先租后买 / 混部验证，避免一次性买断踩坑</li>
+<li><input disabled="" type="checkbox"> max-model-len / gpu-memory-utilization / prefix-caching 实测调参</li>
+<li><input disabled="" type="checkbox"> 锁版本、小版本灰度升级</li>
+<li><input disabled="" type="checkbox"> 队列 + 超时 + 排队告警 + 模型路由降级</li>
+</ul>
+<p>延伸阅读：<a href="../../tools/">vLLM / Langfuse 工具行</a>  ·  系列下一篇《AI 项目成本控制》还在写，先占个坑</p>
+
+    </div>
+
+    <footer class="article-footer"><div class="article-tags"><a class="tag" href="/growth/tags/llm/">#LLM</a><a class="tag" href="/growth/tags/%E7%A7%81%E6%9C%89%E5%8C%96%E9%83%A8%E7%BD%B2/">#私有化部署</a><a class="tag" href="/growth/tags/vllm/">#vLLM</a><a class="tag" href="/growth/tags/%E6%88%90%E6%9C%AC/">#成本</a></div><nav class="series-nav" aria-label="系列导航">
+      <div class="series-nav__label">系列章节</div>
+      <div class="series-nav__links"><a class="series-nav__link" href="/growth/growth/rag-production/">← 上一章 · RAG 系统从 POC 到生产：完整落地要点</a><span class="series-nav__link series-nav__link--next is-disabled">已是最后一篇</span></div>
+    </nav></footer>
+  </div>
+</article><section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">相关阅读</h2>
+      <a class="section__more" href="/growth/growth/">栏目全部 →</a>
+    </div>
+    <div class="card-grid"><article class="card">
+  <a class="card__cover" href="/growth/growth/rag-production/" style="--cover-color: #b8772f" aria-label="RAG 系统从 POC 到生产：完整落地要点">
+    <span class="card__emoji" aria-hidden="true">🔍</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/rag/" style="--chip-color: #b8772f"><span class="chip__text">RAG</span>
+</a><a class="chip" href="/growth/tags/llm/" style="--chip-color: #b8772f"><span class="chip__text">LLM</span>
+</a><a class="chip" href="/growth/tags/ai%E6%9E%B6%E6%9E%84/" style="--chip-color: #b8772f"><span class="chip__text">AI架构</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/rag-production/">RAG 系统从 POC 到生产：完整落地要点</a></h3><p class="card__summary">检索链路、召回缺陷、幻觉来源、降级与成本：为什么 80% 的知识库做不出可用效果，以及如何把它做到生产可用。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 3 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/knowledge-system/" style="--cover-color: #b8772f" aria-label="工程师知识体系搭建：建立自己的知识树">
+    <span class="card__emoji" aria-hidden="true">🌳</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="--chip-color: #b8772f"><span class="chip__text">个人成长</span>
+</a><a class="chip" href="/growth/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="--chip-color: #b8772f"><span class="chip__text">知识管理</span>
+</a><a class="chip" href="/growth/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" style="--chip-color: #b8772f"><span class="chip__text">方法论</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/knowledge-system/">工程师知识体系搭建：建立自己的知识树</a></h3><p class="card__summary">刷了十年文章还是觉得没积累？问题不在输入量，在「没有根的知识是长不住的」。给出一套从输入到沉淀到调用的知识树方法。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-02</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <a class="card__cover" href="/growth/growth/tech-design-writing/" style="--cover-color: #b8772f" aria-label="如何写技术方案：把想法讲清楚，讲给对的人听">
+    <span class="card__emoji" aria-hidden="true">📝</span>
+  </a>
+  <div class="card__body">
+    <div class="card__badges"><a class="chip" href="/growth/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/" style="--chip-color: #b8772f"><span class="chip__text">软技能</span>
+</a><a class="chip" href="/growth/tags/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/" style="--chip-color: #b8772f"><span class="chip__text">技术方案</span>
+</a><a class="chip" href="/growth/tags/%E6%96%87%E6%A1%A3/" style="--chip-color: #b8772f"><span class="chip__text">文档</span>
+</a></div>
+    <h3 class="card__title"><a href="/growth/growth/tech-design-writing/">如何写技术方案：把想法讲清楚，讲给对的人听</a></h3><p class="card__summary">很多技术人代码写得好，方案却写不清楚。技术方案的本质不是文档，是决策：结论先行、数据说话、风险透明。</p><div class="card__meta">
+      <span>成长体系</span>
+      <span>·</span>
+      <span>2026-09-01</span>
+      <span>·</span>
+      <span>约 2 分钟</span>
+    </div>
+  </div>
+</article>
+</div>
+  </div>
+</section></main><footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <h2>🧱 架构 · 创业 · 成长</h2>
+        <p>记录真实踩过的坑与做过的取舍：架构、AI 落地、创业与职业成长。写给同样在路上的技术人。</p>
+        <p class="site-footer__contact">📮 <a href="mailto:irudder@126.com">irudder@126.com</a> · <a href="https://github.com/pastor17" rel="noopener" target="_blank">GitHub</a></p>
+      </div>
+      <div class="site-footer__col">
+        <h3>栏目</h3><a href="/growth/architecture/">🏗️ 架构实战</a><a href="/growth/ai/">🤖 AI 专题</a><a href="/growth/tools/">🧰 工具与工作流</a><a href="/growth/growth/">🌱 成长体系</a><a href="/growth/startup/">🚀 创业复盘</a><a href="/growth/projects/">📦 项目作品</a><a href="/growth/resources/">📥 资源下载</a><a href="/growth/about/">👤 关于我</a>
+      </div>
+      <div class="site-footer__col">
+        <h3>成长体系</h3><a href="/growth/series/engineering-backend/">📘 后端架构落地教程</a><a href="/growth/series/engineering-ai/">🤖 AI 工程落地教程</a><a href="/growth/series/softskills/">💬 技术人软技能系列</a><a href="/growth/series/mindset/">🧠 个人成长 &amp; 思维认知系列</a><a href="/growth/series/career/">🧭 职业路径规划系列</a></div>
+      <div class="site-footer__col">
+        <h3>资源下载</h3><a href="/growth/templates/architecture-review-checklist.md">📄 架构评审清单</a><a href="/growth/templates/postmortem-template.md">📄 故障复盘模板</a><a href="/growth/templates/tech-design-template.md">📄 技术方案文档模板</a><a href="/growth/templates/ai-poc-checklist.md">📄 AI 项目 POC 评估清单</a><a href="/growth/templates/monthly-review-template.md">📄 个人月度复盘模板</a><a href="/growth/templates/resume-review-template.md">📄 简历梳理模板</a></div>
+    </div>
+    <p class="site-footer__copyright">
+      © 2016-2026 记忆研究 · <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备15045180号-1</a>
+    </p>
+  </div>
+</footer>
+<script src="/growth/js/main.min.f57c3122f01c52b52be8802f988857535e291ca91a92d07ed07bfe7e3e07fd6a.js" defer></script>
+</body>
+</html>

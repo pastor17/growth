@@ -423,3 +423,18 @@ a.contact-card:hover { border-color: var(--primary); text-decoration: none; }
   body { background: #fff; }
   .article-content { border: 0; box-shadow: none; padding: 0; max-width: none; }
 }
+
+/* ---------- 代码块复制按钮 ---------- */
+.code-wrap { position: relative; margin: 1.4em 0; }
+.code-wrap pre { margin: 0; }
+.code-copy {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  font-family: var(--font-sans); font-size: 0.74rem; line-height: 1;
+  color: #c8d3dc; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16); border-radius: 6px;
+  padding: 5px 10px; cursor: pointer; opacity: 0.55;
+  transition: opacity 0.15s, background 0.15s;
+}
+.code-wrap:hover .code-copy { opacity: 1; }
+.code-copy:hover { background: rgba(255,255,255,0.16); color: #fff; }
+.code-copy.is-copied { background: #0e7c66; color: #fff; border-color: #0e7c66; opacity: 1; }
