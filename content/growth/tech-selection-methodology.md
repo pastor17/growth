@@ -1,7 +1,7 @@
 ---
 title: "技术选型完整方法论：如何做 POC、如何评估取舍"
 slug: "tech-selection-methodology"
-date: 2026-09-01
+date: 2025-11-18
 draft: false
 series: ["engineering-backend"]
 weight: 1

@@ -30,7 +30,7 @@
       summary: "雪崩、穿透、击穿、热 key 的完整应对，与「什么时候不该用缓存」。"
     - slug: "distributed-system-design"
       title: "分布式系统设计：不要过度设计"
-      status: "planned"
+      status: "done"
       summary: "什么规模才值得上分布式，一致性、可用性的现实取舍。"
     - slug: "online-stability"
       title: "线上稳定性建设：告警、故障演练、复盘完整流程"
@@ -69,7 +69,7 @@
       summary: "什么时候必须私有化、什么时候调 API 更划算，成本账怎么算。"
     - slug: "ai-cost-control"
       title: "AI 项目成本控制：缓存、限流、降级策略"
-      status: "planned"
+      status: "done"
       summary: "token 账单不可控的根源，与工程侧的成本治理。"
   order: 2
 

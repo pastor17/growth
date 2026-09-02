@@ -1,7 +1,7 @@
 ---
 title: "如何做业务架构拆解：从需求输出架构方案"
 slug: "business-architecture-breakdown"
-date: 2026-09-02
+date: 2025-12-06
 draft: false
 series: ["engineering-backend"]
 weight: 2

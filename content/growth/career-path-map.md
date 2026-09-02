@@ -1,7 +1,7 @@
 ---
 title: "技术人成长路径全景：阶段能力、瓶颈与常见误区"
 slug: "career-path-map"
-date: 2026-09-01
+date: 2025-05-21
 draft: false
 series: ["career"]
 weight: 1

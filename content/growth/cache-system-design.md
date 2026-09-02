@@ -1,7 +1,7 @@
 ---
 title: "缓存体系设计实战：多级缓存、失效策略与缓存坑"
 slug: "cache-system-design"
-date: 2026-09-02
+date: 2026-01-14
 draft: false
 series: ["engineering-backend"]
 weight: 3

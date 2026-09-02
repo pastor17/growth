@@ -1,7 +1,7 @@
 ---
 title: "2026 年中 Agent 框架怎么选：先分层，再谈选型"
 slug: "agent-framework-selection-2026"
-date: 2026-09-02
+date: 2026-08-27
 draft: false
 tags: ["Agent实战", "技术选型", "行业剖析"]
 summary: "大厂 Agent SDK 扎堆发布，选型先别比参数，先用「分层心智模型」框定自己的场景：Runtime / SDK / 编排 / 平台，附决策树与 POC 验收清单。"

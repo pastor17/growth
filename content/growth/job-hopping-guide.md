@@ -1,7 +1,7 @@
 ---
 title: "跳槽完整指南：梳理经历、简历、面试与谈薪资"
 slug: "job-hopping-guide"
-date: 2026-09-02
+date: 2025-06-11
 draft: false
 series: ["career"]
 weight: 2

@@ -1,7 +1,7 @@
 ---
 title: "Agent 框架深度拆解：编排能力、真实边界与部署坑"
 slug: "agent-framework-analysis"
-date: 2026-09-02
+date: 2026-05-30
 draft: false
 tags: ["Agent实战", "项目拆解", "AI架构", "LLM"]
 summary: "以开源 Agent 框架为例做架构解剖：编排模型、工具调用、状态管理、CORS 与部署坑，以及企业改造的取舍。"

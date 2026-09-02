@@ -1,7 +1,7 @@
 ---
 title: "私有化推理部署：vLLM 选型、算力评估与扩缩容"
 slug: "llm-private-deploy"
-date: 2026-09-02
+date: 2026-02-25
 draft: false
 series: ["engineering-ai"]
 weight: 4

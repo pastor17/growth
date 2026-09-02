@@ -1,7 +1,7 @@
 ---
 title: "RAG 系统从 POC 到生产：完整落地要点"
 slug: "rag-production"
-date: 2026-09-02
+date: 2025-09-24
 draft: false
 series: ["engineering-ai"]
 weight: 1

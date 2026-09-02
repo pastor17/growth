@@ -1,7 +1,7 @@
 ---
 title: "如何写技术方案：把想法讲清楚，讲给对的人听"
 slug: "tech-design-writing"
-date: 2026-09-01
+date: 2025-08-05
 draft: false
 series: ["softskills"]
 weight: 1

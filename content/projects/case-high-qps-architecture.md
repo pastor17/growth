@@ -1,7 +1,7 @@
 ---
 title: "项目案例：百万级 QPS 后端架构演进（脱敏）"
 slug: "case-high-qps-architecture"
-date: 2026-09-01
+date: 2025-02-20
 draft: false
 tags: ["项目案例", "架构实战", "高并发"]
 summary: "业务规模、负责模块、架构挑战与取得结果的脱敏案例：从单体到支撑百万级峰值 QPS 的演进路径。"

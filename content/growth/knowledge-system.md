@@ -1,7 +1,7 @@
 ---
 title: "工程师知识体系搭建：建立自己的知识树"
 slug: "knowledge-system"
-date: 2026-09-02
+date: 2025-07-16
 draft: false
 series: ["mindset"]
 weight: 1

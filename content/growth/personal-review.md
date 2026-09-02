@@ -1,7 +1,7 @@
 ---
 title: "如何做好个人复盘：周/月/项目复盘方法论"
 slug: "personal-review"
-date: 2026-09-02
+date: 2026-04-02
 draft: false
 series: ["mindset"]
 weight: 3

@@ -1,7 +1,7 @@
 ---
 title: "一次缓存雪崩的完整复盘：从现象到根因到架构改进"
 slug: "cache-avalanche-postmortem"
-date: 2026-09-01
+date: 2025-04-15
 draft: false
 tags: ["故障复盘", "稳定性", "缓存", "架构实战"]
 summary: "一次典型缓存雪崩的完整复盘：现象、时间线、根因、止血与后续架构改进，附可用检查清单。"

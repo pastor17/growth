@@ -42,7 +42,8 @@
     </ol>
     {{- end -}}
 
-    {{- $paginator := .Paginate (.Pages.ByDate.Reverse) -}}
+    {{- $sorted := sort .Pages "Params.weight" "asc" -}}
+    {{- $paginator := .Paginate $sorted -}}
     {{- if gt (len $paginator.Pages) 0 -}}
     <h2 class="tool-group__title" style="margin-top: 40px;">📚 已发布文章</h2>
     <div class="card-grid">
