@@ -61,7 +61,7 @@
       summary: "Agent 不是越智能越好，边界约束与失败降级才是生产关键。"
     - slug: "llm-observability"
       title: "大模型应用可观测性：监控幻觉、token 成本与调用失败"
-      status: "planned"
+      status: "done"
       summary: "把 LLM 纳入统一观测体系，而不是黑盒调用。"
     - slug: "llm-private-deploy"
       title: "私有化推理部署：vLLM 选型、算力评估与扩缩容"
