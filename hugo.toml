@@ -3,9 +3,9 @@
 # 人设定位：架构专家 ｜ 互联网创业者 ｜ 职业生涯导师
 # =============================================================
 
-# GitHub Pages 地址：https://pastor17.github.io/growth/
-# 用户：pastor17 ｜ 仓库：growth ｜ 部署分支：growth
-baseURL = 'https://pastor17.github.io/growth/'
+# 站点地址（自定义域名，根路径）：https://irudder.me/
+# 用户：pastor17 ｜ 仓库：growth ｜ 部署分支：growth ｜ CNAME：static/CNAME
+baseURL = 'https://irudder.me/'
 title = '架构 · 创业 · 成长'
 locale = 'zh-CN'
 hasCJKLanguage = true

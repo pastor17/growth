@@ -129,11 +129,11 @@ coverEmoji: ""           # 留空则用栏目 emoji
 > - `growth` 分支 → 存放本站点（由 GitHub Pages 部署）
 > - `master` 分支 → 只放一个与站点不相干的 `readme.md`
 >
-> 站点地址：**https://pastor17.github.io/growth/**
+> 站点地址：**https://irudder.me/**
 
 ### 首次部署（一次性）
 
-1. `hugo.toml` 已配置为真实地址（`baseURL = https://pastor17.github.io/growth/`）；如改仓库/域名，记得同步修改。
+1. `hugo.toml` 已配置为真实地址（`baseURL = https://irudder.me/`）；如改仓库/域名，记得同步修改。
 2. 推送两个分支：
 
    ```bash
@@ -143,7 +143,7 @@ coverEmoji: ""           # 留空则用栏目 emoji
    ```
 
 3. 打开仓库 **Settings → Pages**，把 **Source** 从「Deploy from a branch」改为 **GitHub Actions**。
-4. 推送后，**Actions** 页会自动运行 `Deploy Hugo site to Pages`；几分钟后访问 `https://pastor17.github.io/growth/`。
+4. 推送后，**Actions** 页会自动运行 `Deploy Hugo site to Pages`；几分钟后访问 `https://irudder.me/`。
 
 > 之后每次 `git push origin growth` 都会自动重新构建并发布。也可以在 Actions 页手动触发（`workflow_dispatch`）。
 
@@ -155,7 +155,7 @@ coverEmoji: ""           # 留空则用栏目 emoji
 
 ## 上线前自查清单
 
-- [ ] 核对 `hugo.toml`：`baseURL` 已是 `https://pastor17.github.io/growth/`；`author` / `email` 按需修改
+- [ ] 核对 `hugo.toml`：`baseURL` 已是 `https://irudder.me/`；`author` / `email` 按需修改
 - [ ] `data/timeline.yaml` 改成真实经历（脱敏）
 - [ ] 示例文章保留或替换为你的真实经历（不要虚构项目）
 - [ ] `data/tools.yaml` 只保留你真正用过的工具
