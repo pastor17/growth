@@ -68,7 +68,7 @@ coverEmoji: "🧭"
 
 ## 阶段五：创业 / 独立开发者——考核「商业闭环」
 
-**规则完全不同**：技术能力只是入场券，真正考核的是**需求判断、获客、现金流与坚持**。这也是很多技术人栽跟头的地方——详见[创业复盘栏目](../startup/)与[《技术人创业最容易踩的坑》](../startup/technical-founder-pitfalls/)。
+**规则完全不同**：技术能力只是入场券，真正考核的是**需求判断、获客、现金流与坚持**。这也是很多技术人栽跟头的地方——详见[创业复盘栏目](../../startup/)与[《技术人创业最容易踩的坑》](../../startup/technical-founder-pitfalls/)。
 
 ## 一张图记住：每个阶段要「放下」什么
 
@@ -84,6 +84,6 @@ coverEmoji: "🧭"
 
 - [ ] 判断自己当前阶段，写下「要放下」的一件事
 - [ ] 明确下个阶段的考核标准（问你的 leader，别猜）
-- [ ] 每半年做一次个人复盘（[模板下载](../templates/monthly-review-template.md)）
+- [ ] 每半年做一次个人复盘（[模板下载](../../templates/monthly-review-template.md)）
 
-相关阅读：转管理与转架构怎么选（系列后续章节，规划中）｜ [💼 技术人创业的坑](../startup/technical-founder-pitfalls/)
+相关阅读：转管理与转架构怎么选（系列后续章节，规划中）｜ [💼 技术人创业的坑](../../startup/technical-founder-pitfalls/)

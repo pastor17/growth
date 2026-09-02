@@ -69,6 +69,6 @@ MVP 不是「功能最少能跑的版本」，是「**验证核心假设所需�
 - [ ] 现金流按最坏情况排两版
 - [ ] 合伙人协议第一天就签
 - [ ] 每周只有一个北极星指标
-- [ ] 每季度做一次项目复盘（[模板下载](../templates/monthly-review-template.md)）
+- [ ] 每季度做一次项目复盘（[模板下载](../../templates/monthly-review-template.md)）
 
-相关阅读：[🧭 技术人成长路径全景](../growth/career-path-map/) ｜ 创业工具栈见 [🧰 工具与工作流](../tools/)
+相关阅读：[🧭 技术人成长路径全景](../../growth/career-path-map/) ｜ 创业工具栈见 [🧰 工具与工作流](../../tools/)

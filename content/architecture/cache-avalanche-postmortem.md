@@ -80,4 +80,4 @@ coverEmoji: "❄️"
 - [ ] 故障演练覆盖「缓存全失效」场景
 - [ ] 告警触发即执行预案，不赌「再等等」
 
-相关资源：[📥 故障复盘模板](../templates/postmortem-template.md) ｜ 排障工具链见 [🧰 工具与工作流](../tools/)
+相关资源：[📥 故障复盘模板](../../templates/postmortem-template.md) ｜ 排障工具链见 [🧰 工具与工作流](../../tools/)

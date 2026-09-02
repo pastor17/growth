@@ -10,7 +10,7 @@ author: "diunilaomei"
 coverEmoji: "🔧"
 ---
 
-> 配套：本栏目[工具总览表](../tools/)中的「架构 & 运维工具」分类；方法论见《成长体系》的稳定性章节。
+> 配套：本栏目[工具总览表](../../tools/)中的「架构 & 运维工具」分类；方法论见《成长体系》的稳定性章节。
 
 ## 排障的本质：快速缩小「问题空间」
 
@@ -68,4 +68,4 @@ OpenTelemetry + Jaeger/Tempo，把一次请求的每一跳（网关 → 服务 A
 - [ ] 链路追踪采样策略明确
 - [ ] 修复前必复现、修复后必验证
 
-相关资源：[📥 故障复盘模板](../templates/postmortem-template.md) ｜ 故障案例见 [❄️ 一次缓存雪崩的完整复盘](../architecture/cache-avalanche-postmortem/)
+相关资源：[📥 故障复盘模板](../../templates/postmortem-template.md) ｜ 故障案例见 [❄️ 一次缓存雪崩的完整复盘](../../architecture/cache-avalanche-postmortem/)
