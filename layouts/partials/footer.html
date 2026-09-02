@@ -29,6 +29,8 @@
         {{- end -}}
       </div>
     </div>
-    <p class="site-footer__copyright">{{ site.Params.copyright }}</p>
+    <p class="site-footer__copyright">
+      {{ site.Params.copyright }}{{ with site.Params.icp }} · <a href="{{ site.Params.icpUrl | default "https://beian.miit.gov.cn/" }}" rel="noopener" target="_blank">{{ . }}</a>{{ end }}
+    </p>
   </div>
 </footer>

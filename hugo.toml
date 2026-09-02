@@ -21,7 +21,9 @@ disableHugoGeneratorInject = true
   description = '分享真实踩坑、架构实战、创业思考与 AI 落地，只输出可复用经验，不贩卖焦虑。'
   author = 'diunilaomei'            # 文章署名，可改成你的名字 / ID
   siteName = '架构 · 创业 · 成长'
-  copyright = '© 2026 diunilaomei · 架构 · 创业 · 成长'
+  copyright = '© 2016-2026 记忆研究'
+  icp = '粤ICP备15045180号-1'       # 备案号（页脚跳转工信部备案查询）
+  icpUrl = 'https://beian.miit.gov.cn/'
   defaultCoverEmoji = '🧱'
   # 联系方式（关于页、页脚会用到）
   email = 'irudder@126.com'
