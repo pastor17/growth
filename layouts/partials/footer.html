@@ -6,7 +6,6 @@
         <p>{{ site.Params.description }}</p>
         <p class="site-footer__contact">
           {{- with site.Params.email }}📮 <a href="mailto:{{ . }}">{{ . }}</a>{{ end -}}
-          {{- with site.Params.github }} · <a href="{{ . }}" rel="noopener" target="_blank">GitHub</a>{{ end -}}
         </p>
       </div>
       <div class="site-footer__col">
