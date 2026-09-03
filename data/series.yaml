@@ -57,7 +57,7 @@
       summary: "检索链路、召回缺陷、幻觉来源、降级与成本，以及为什么 80% 的知识库不可用。"
     - slug: "agent-development"
       title: "Agent 应用开发：编排、提示工程、边界与降级"
-      status: "planned"
+      status: "done"
       summary: "Agent 不是越智能越好，边界约束与失败降级才是生产关键。"
     - slug: "llm-observability"
       title: "大模型应用可观测性：监控幻觉、token 成本与调用失败"
