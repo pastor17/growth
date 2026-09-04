@@ -1,18 +1,18 @@
 # =============================================================
-# 页脚「友链」（名称可自行修改）
+# 页脚「友链」：显示各站点名称，点击新窗口打开
 # =============================================================
-- name: "blog.irudder.me"
+- name: "SelfTechHub"
   url: "https://blog.irudder.me/"
-  desc: "博客"
+  desc: "blog"
 
-- name: "tool.irudder.me"
+- name: "七七工具网"
   url: "https://tool.irudder.me/"
-  desc: "工具"
+  desc: "tool"
 
-- name: "fairytale.irudder.me"
+- name: "童心灯塔"
   url: "https://fairytale.irudder.me/"
   desc: "故事"
 
 - name: "edu.irudder.me"
   url: "https://edu.irudder.me/"
-  desc: "学习"
+  desc: "站点暂未上线，待补充站名"
