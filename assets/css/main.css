@@ -369,7 +369,7 @@ a.contact-card:hover { border-color: var(--primary); text-decoration: none; }
 .site-footer { background: #1f2933; color: #d8dfe6; margin-top: 40px; padding: 46px 0 26px; }
 .site-footer a { color: #9fc3d3; }
 .site-footer a:hover { color: #fff; }
-.site-footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 26px; }
+.site-footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 26px; }
 .site-footer h2 { color: #fff; font-size: 1.15rem; }
 .site-footer h3 { color: #fff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
 .site-footer__about p { color: #aeb8c2; font-size: 0.88rem; max-width: 40rem; }
@@ -380,6 +380,10 @@ a.contact-card:hover { border-color: var(--primary); text-decoration: none; }
 .site-footer__copyright a { color: #8b98a4; }
 
 /* ---------- 响应式 ---------- */
+@media (max-width: 1120px) {
+  .site-footer__grid { grid-template-columns: 2fr 1fr 1fr; }
+}
+
 @media (max-width: 960px) {
   .site-footer__grid { grid-template-columns: 1fr 1fr; gap: 24px; }
 }

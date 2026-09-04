@@ -1,0 +1,18 @@
+# =============================================================
+# 页脚「友链」（名称可自行修改）
+# =============================================================
+- name: "blog.irudder.me"
+  url: "https://blog.irudder.me/"
+  desc: "博客"
+
+- name: "tool.irudder.me"
+  url: "https://tool.irudder.me/"
+  desc: "工具"
+
+- name: "fairytale.irudder.me"
+  url: "https://fairytale.irudder.me/"
+  desc: "故事"
+
+- name: "edu.irudder.me"
+  url: "https://edu.irudder.me/"
+  desc: "学习"

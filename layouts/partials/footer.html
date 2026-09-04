@@ -27,6 +27,12 @@
           <a href="{{ printf "templates/%s/" (strings.TrimSuffix ".md" .file) | relURL }}">{{ .name }}</a>
         {{- end -}}
       </div>
+      <div class="site-footer__col">
+        <h3>友链</h3>
+        {{- range site.Data.links -}}
+          <a href="{{ .url }}" rel="noopener" target="_blank">{{ .name }}</a>
+        {{- end -}}
+      </div>
     </div>
     <p class="site-footer__copyright">
       {{ site.Params.copyright }}{{ with site.Params.icp }} · <a href="{{ site.Params.icpUrl | default "https://beian.miit.gov.cn/" }}" rel="noopener" target="_blank">{{ . }}</a>{{ end }}
