@@ -16,3 +16,7 @@
 - name: "科学虚拟实验室"
   url: "https://edu.irudder.me/"
   desc: "edu"
+
+- name: "考证宝典"
+  url: "https://kaozheng.irudder.me/"
+  desc: "职业考证 · 书库与题库"
