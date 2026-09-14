@@ -35,3 +35,13 @@
 {{- $css := resources.Get "css/main.css" -}}
 {{- if not hugo.IsServer }}{{ $css = $css | minify | fingerprint }}{{ end -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+{{- /* 百度统计 */ -}}
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?fcf0ddd54a3b26be3e9cf56aef8a47c6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
