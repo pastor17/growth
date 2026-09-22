@@ -78,9 +78,35 @@
   </div>
 </article>
 
-{{- $related := where site.RegularPages "Section" .Section -}}
-{{- $related = where $related "RelPermalink" "ne" .RelPermalink -}}
-{{- $related = first 3 $related -}}
+{{- /* 相关阅读：按「共现标签数」加权排序，而非按栏目顺排。
+       理由：栏目内顺排会把任意同栏目文章推给读者与爬虫，语义相关性弱；
+       共享标签越多说明主题越接近，既提升读者停留，也让爬虫顺着主题簇抓取。 */ -}}
+{{- $cur := . -}}
+{{- $curTags := $cur.Params.tags | default slice -}}
+{{- $curSeries := $cur.Params.series | default slice -}}
+{{- $scored := slice -}}
+{{- range where site.RegularPages "Section" "not in" (slice "about" "resources" "templates") -}}
+  {{- if ne .RelPermalink $cur.RelPermalink -}}
+    {{- $shared := 0 -}}
+    {{- range .Params.tags -}}
+      {{- if in $curTags . }}{{ $shared = add $shared 1 }}{{ end -}}
+    {{- end -}}
+    {{- $sameSeries := false -}}
+    {{- range .Params.series -}}
+      {{- if in $curSeries . }}{{ $sameSeries = true }}{{ end -}}
+    {{- end -}}
+    {{- $sameSection := eq .Section $cur.Section -}}
+    {{- /* 权重：共现标签 ×10，同系列 ×6，同栏目 ×1（仅作末位兜底） */ -}}
+    {{- $score := add (mul $shared 10) (cond $sameSeries 6 0) (cond $sameSection 1 0) -}}
+    {{- if gt $score 1 -}}
+      {{- $scored = $scored | append (dict "page" . "score" $score) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $related := slice -}}
+{{- range first 3 (sort $scored "score" "desc") -}}
+  {{- $related = $related | append .page -}}
+{{- end -}}
 {{- if gt (len $related) 0 -}}
 <section class="section">
   <div class="container">

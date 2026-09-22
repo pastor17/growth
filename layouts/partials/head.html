@@ -6,36 +6,79 @@
   {{- $desc = site.Params.description -}}
 {{- else if .Description -}}
   {{- $desc = .Description -}}
+{{- else if .Params.summary -}}
+  {{- $desc = .Params.summary -}}
 {{- else if .Summary -}}
   {{- $desc = .Summary | plainify | truncate 160 -}}
+{{- else -}}
+  {{- $desc = site.Params.description -}}
 {{- end -}}
 <meta name="description" content="{{ $desc }}">
 <meta name="author" content="{{ site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* 抓取与索引指示：允许引擎展示完整摘要与大幅图片预览，
+       这两项直接决定 AI 概览 / 富结果能不能引用到足够长的正文片段。 */ -}}
+{{- if hugo.IsProduction }}
+{{- if .IsPage }}
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+{{- else }}
+<meta name="robots" content="index, follow, max-image-preview:large">
+{{- end }}
+{{- else }}
+<meta name="robots" content="noindex, nofollow">
+{{- end }}
+
 <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 <meta name="theme-color" content="{{ site.Params.themeColor | default "#1f6f8b" }}">
+
+{{- /* 机器可读入口的自动发现：RSS 订阅源 + AI 内容索引 */ -}}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} · 全部文章" href="{{ "index.xml" | absURL }}">
+<link rel="alternate" type="text/plain" title="llms.txt · AI 内容索引" href="{{ "llms.txt" | absURL }}">
+
+{{- /* 站群关系声明：让引擎知道这些站点同属一个主体、主题互补 */ -}}
+{{- range site.Data.hubs }}
+<link rel="related" href="{{ .url }}" title="{{ .name }} —— {{ .desc }}">
+{{- end }}
+<link rel="related" href="{{ "hubs/" | absURL }}" title="站群导航">
+
+{{- /* Open Graph */ -}}
 <meta property="og:site_name" content="{{ site.Title }}">
-<meta property="og:title" content="{{ .Title }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }} · {{ site.Params.subtitle }}{{ else }}{{ .Title }}{{ end }}">
 <meta property="og:description" content="{{ $desc }}">
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="zh_CN">
+{{- if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">
+<meta property="article:modified_time" content="{{ (.Lastmod | default .Date).Format "2006-01-02T15:04:05-07:00" }}">
+<meta property="article:author" content="{{ .Params.author | default site.Params.author }}">
+{{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}
+
+{{- /* Twitter / X */ -}}
 <meta name="twitter:card" content="summary">
-{{- with .Params.tags -}}
-<meta name="keywords" content="{{ delimit . ", " }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $desc }}">
+
+{{- /* keywords：文章页用标签；列表页用栏目名+主题词；首页用核心主题词 */ -}}
+{{- if .Params.tags -}}
+<meta name="keywords" content="{{ delimit .Params.tags ", " }}">
+{{- else if .IsHome -}}
+<meta name="keywords" content="系统架构,后端工程,AI 工程落地,互联网创业,技术人职业成长,架构师博客">
+{{- else -}}
+<meta name="keywords" content="{{ .Title }}, 系统架构, 后端工程, AI 工程落地, 技术人成长">
 {{- end -}}
-{{- $ld := "" -}}
-{{- if .IsHome -}}
-  {{- $ld = (dict "@context" "https://schema.org" "@type" "WebSite" "name" site.Title "url" site.Home.Permalink "description" site.Params.description "author" (dict "@type" "Person" "name" site.Params.author "url" (site.Params.github | default site.Home.Permalink))) | jsonify -}}
-{{- else if .IsPage -}}
-  {{- $ld = (dict "@context" "https://schema.org" "@type" "Article" "headline" .Title "description" $desc "datePublished" (.Date.Format "2006-01-02") "inLanguage" "zh-CN" "url" .Permalink "author" (dict "@type" "Person" "name" (.Params.author | default site.Params.author)) "publisher" (dict "@type" "Person" "name" site.Params.author)) | jsonify -}}
-{{- end -}}
-{{- with $ld -}}
-{{ printf "<script type=\"application/ld+json\">%s</script>" . | safeHTML }}
-{{- end -}}
+
+{{- partial "structured-data.html" . -}}
+
 {{- $css := resources.Get "css/main.css" -}}
 {{- if not hugo.IsServer }}{{ $css = $css | minify | fingerprint }}{{ end -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
-{{- /* 百度统计 */ -}}
+{{- /* 百度统计：仅生产环境加载，避免本地/预览消耗额度 */ -}}
+{{- if hugo.IsProduction }}
 <script>
 var _hmt = _hmt || [];
 (function() {
@@ -45,3 +88,4 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
+{{- end }}

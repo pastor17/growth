@@ -1,0 +1,138 @@
+# =============================================================
+# robots.txt —— 搜索与 AI 抓取策略
+# 原则：公开内容全部欢迎抓取（含 AI 训练/检索爬虫），
+#       只挡纯采集型与低价值爬虫；不挡就等于默认允许，但显式声明
+#       能让各引擎的审核策略与日志统计更可预期。
+# 站点地图：{{ "sitemap.xml" | absURL }}
+# AI 内容索引：{{ "llms.txt" | absURL }}
+# =============================================================
+
+# ---------- 传统搜索引擎 ----------
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# ---------- AI 检索 / 索引类（决定「AI 搜索能否引用你」）----------
+# OpenAI 检索与实时浏览
+User-agent: OAI-SearchBot
+Allow: /
+
+# ChatGPT 用户主动访问页面
+User-agent: ChatGPT-User
+Allow: /
+
+# OpenAI 训练爬虫
+User-agent: GPTBot
+Allow: /
+
+# Anthropic Claude 检索与用户访问
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Perplexity 检索与用户访问
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google 生成式 AI（AI Overviews / Gemini 训练与 grounding）
+User-agent: Google-Extended
+Allow: /
+
+# Apple 智能
+User-agent: Applebot-Extended
+Allow: /
+
+# 字节 / 豆包、腾讯元宝、月之暗面 Kimi、智谱、DeepSeek 等国内 AI
+User-agent: Bytespider
+Allow: /
+
+User-agent: Doubao
+Allow: /
+
+User-agent: HunyuanBot
+Allow: /
+
+User-agent: KimiBot
+Allow: /
+
+User-agent: MoonshotBot
+Allow: /
+
+User-agent: ChatGLM-Spider
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# ---------- 明确拒绝：纯数据采集 / 无回流的镜像型 ----------
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+# ---------- 兜底 ----------
+User-agent: *
+Allow: /
+Disallow: /page/
+Disallow: /*.json$
+
+Sitemap: {{ "sitemap.xml" | absURL }}

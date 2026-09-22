@@ -12,8 +12,38 @@ hasCJKLanguage = true
 summaryLength = 140
 enableEmoji = true
 enableRobotsTXT = true
-disableKinds = ['RSS']
 disableHugoGeneratorInject = true
+
+# -------------------------------------------------------------
+# 输出格式：面向搜索引擎 / AI 引擎的机器可读入口
+#   RSS        → /index.xml（订阅源，同时是各引擎的更新信号）
+#   llmsindex  → /llms.txt（AI 引擎的站点内容地图，Markdown 格式）
+#   llmsfull   → /llms-full.txt（全站正文纯文本，便于 RAG 直接抓取）
+# -------------------------------------------------------------
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = 'application/rss+xml'
+    baseName = 'index'
+    rel = 'alternate'
+    isPlainText = false
+
+  [outputFormats.llmsindex]
+    mediaType = 'text/plain'
+    baseName = 'llms'
+    isPlainText = true
+    notAlternative = true
+
+  [outputFormats.llmsfull]
+    mediaType = 'text/plain'
+    baseName = 'llms-full'
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ['HTML', 'RSS', 'llmsindex', 'llmsfull']
+  section = ['HTML', 'RSS']
+  taxonomy = ['HTML']
+  term = ['HTML']
 
 [params]
   # 一句话定位 slogan（出现在首页首屏与站点副标题）
@@ -54,3 +84,12 @@ disableHugoGeneratorInject = true
 [pagination]
   pagerSize = 12
   path = 'page'
+
+# -------------------------------------------------------------
+# 站群导航页 /hubs/
+#   layouts/hubs/list.html 渲染 data/hubs.yaml，
+#   给主域一个可被抓取的中枢页来串联各子域站点。
+#   head 中输出 rel="related" 声明站点间关系。
+# -------------------------------------------------------------
+[permalinks]
+  hubs = '/hubs/'

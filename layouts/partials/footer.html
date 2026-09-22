@@ -10,7 +10,7 @@
       </div>
       <div class="site-footer__col">
         <h3>栏目</h3>
-        {{- range where site.Data.columns "id" "ne" "about" -}}
+        {{- range where site.Data.columns "id" "not in" (slice "about" "hubs") -}}
           <a href="{{ printf "%s/" .id | relURL }}">{{ .emoji }} {{ .name }}</a>
         {{- end -}}
         <a href="{{ "about/" | relURL }}">👤 关于我</a>
@@ -28,10 +28,11 @@
         {{- end -}}
       </div>
       <div class="site-footer__col">
-        <h3>友链</h3>
-        {{- range site.Data.links -}}
-          <a href="{{ .url }}" rel="noopener" target="_blank">{{ .name }}</a>
+        <h3>站群导航</h3>
+        {{- range site.Data.hubs -}}
+          <a href="{{ .url }}" rel="noopener" target="_blank" title="{{ .intro | truncate 70 }}">{{ .emoji }} {{ .name }}</a>
         {{- end -}}
+        <a href="{{ "hubs/" | relURL }}">🧭 全部站点说明</a>
       </div>
     </div>
     <p class="site-footer__copyright">

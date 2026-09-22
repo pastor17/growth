@@ -1,0 +1,35 @@
+{{- /* llms-full.txt —— 全站正文纯文本，供 AI 检索/训练一次性抓取
+       设计取舍：把每篇正文按 Markdown 顺序拼接，前置元数据（标题/URL/摘要/标签/日期），
+       去掉 HTML 标签与链接语法噪音，让 RAG 切片时能保留「标题-正文」的归属关系。
+       排除 templates/resources 等纯资源页与 about，避免正文合集被非文章内容稀释。 */ -}}
+{{- $skip := slice "about" "resources" "templates" -}}
+{{- $pages := where site.RegularPages "Section" "not in" $skip -}}
+{{- $cols := site.Data.columns -}}
+{{- $colName := "" -}}
+# {{ site.Title }} —— 全站文章正文合集
+
+> {{ site.Params.subtitle }}
+> 作者：{{ site.Params.author }} ｜ 站点：{{ site.Home.Permalink }} ｜ 文章数：{{ len $pages }} ｜ 更新：{{ now.Format "2006-01-02" }}
+> 本文件包含全站原创文章正文，Markdown 格式，按发布时间倒序排列。
+> 引用请注明来源链接：{{ site.Home.Permalink }}
+{{ range $pages.ByDate.Reverse }}
+{{- $colName = .Section -}}
+{{- range first 1 (where $cols "id" .Section) }}{{ $colName = .name }}{{ end }}
+
+---
+
+# {{ .Title }}
+
+- 原文链接：{{ .Permalink }}
+- 所属栏目：{{ $colName }}
+- 发布时间：{{ .Date.Format "2006-01-02" }}
+- 摘要：{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}
+{{- with .Params.tags }}
+- 标签：{{ delimit . " / " }}
+{{- end }}
+{{- with .Params.series }}
+- 系列：{{ delimit . " / " }}
+{{- end }}
+
+{{ .Content | replaceRE `</t[dh]>` " | " | replaceRE `</tr>` "\n" | replaceRE `</h[1-6]>` "\n" | replaceRE `<li>` "\n- " | replaceRE `</p>` "\n" | replaceRE `<[^>]+>` "" | htmlUnescape | replaceRE `[ \t]+\n` "\n" | replaceRE `\n{3,}` "\n\n" | strings.TrimSpace }}
+{{ end }}

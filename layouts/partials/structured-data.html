@@ -1,0 +1,119 @@
+{{- /* structured-data.html —— schema.org 结构化数据（JSON-LD）
+       为什么值得做：AI 搜索（AI Overviews / ChatGPT Search / Perplexity / 豆包 / 文心）
+       与搜索引擎都优先消费机器可读的实体关系。把「谁写的、什么时候写的、属于哪个栏目、
+       在哪条面包屑路径上、讲了什么」显式声明出来，是内容被正确引用与消歧的前提。
+
+       输出：
+       - 每页      → WebSite + Organization(publisher) + Person(author)
+       - 文章页    → BlogPosting（dates/author/keywords/wordCount/articleSection）+ BreadcrumbList
+       - 首页      → ItemList（最新文章）
+       - 栏目/标签/系列页 → CollectionPage + BreadcrumbList + ItemList
+     注意：publisher 必须是 Organization 类型才有意义，Person 类型的 publisher 会被富结果校验忽略。 */ -}}
+
+{{- $siteURL := site.Home.Permalink -}}
+{{- $authorName := site.Params.author | default "diunilaomei" -}}
+{{- $authorURL := site.Params.github | default $siteURL -}}
+{{- $graph := slice -}}
+
+{{- /* ---- WebSite ---- */ -}}
+{{- $graph = $graph | append (dict
+      "@type" "WebSite"
+      "@id" (printf "%s#website" $siteURL)
+      "url" $siteURL
+      "name" site.Title
+      "description" (site.Params.description | default "")
+      "inLanguage" "zh-CN"
+      "publisher" (dict "@id" (printf "%s#org" $siteURL))
+      "author" (dict "@id" (printf "%s#author" $siteURL))
+) -}}
+
+{{- /* ---- Organization（发布方）---- */ -}}
+{{- $org := dict
+      "@type" "Organization"
+      "@id" (printf "%s#org" $siteURL)
+      "name" (site.Params.siteName | default site.Title)
+      "url" $siteURL
+      "logo" (dict "@type" "ImageObject" "url" ("favicon.svg" | absURL))
+-}}
+{{- with site.Params.email }}{{ $org = merge $org (dict "email" .) }}{{ end -}}
+{{- $graph = $graph | append $org -}}
+
+{{- /* ---- Person（作者实体，服务 E-E-A-T）---- */ -}}
+{{- $person := dict
+      "@type" "Person"
+      "@id" (printf "%s#author" $siteURL)
+      "name" $authorName
+      "url" $authorURL
+      "description" (site.Params.subtitle | default "")
+      "knowsAbout" (slice "大规模系统架构" "后端工程" "AI 工程落地" "互联网创业" "技术人职业成长")
+-}}
+{{- $graph = $graph | append $person -}}
+
+{{- if .IsPage -}}
+
+  {{- $colName := .Section -}}
+  {{- range first 1 (where site.Data.columns "id" .Section) }}{{ $colName = .name }}{{ end -}}
+
+  {{- /* ---- BlogPosting ---- */ -}}
+  {{- $post := dict
+        "@type" "BlogPosting"
+        "@id" (printf "%s#article" .Permalink)
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+        "headline" (.Title | plainify)
+        "url" .Permalink
+        "inLanguage" "zh-CN"
+        "datePublished" (.Date.Format "2006-01-02T15:04:05-07:00")
+        "dateModified" ((.Lastmod | default .Date).Format "2006-01-02T15:04:05-07:00")
+        "author" (dict "@id" (printf "%s#author" $siteURL))
+        "publisher" (dict "@id" (printf "%s#org" $siteURL))
+        "isPartOf" (dict "@id" (printf "%s#website" $siteURL))
+        "articleSection" $colName
+        "wordCount" .WordCount
+  -}}
+  {{- with .Params.summary }}{{ $post = merge $post (dict "description" .) }}{{ end -}}
+  {{- with .Params.tags }}{{ $post = merge $post (dict "keywords" (delimit . ", ")) }}{{ end -}}
+  {{- with .Params.series }}{{ $post = merge $post (dict "about" (delimit . ", ")) }}{{ end -}}
+  {{- $graph = $graph | append $post -}}
+
+  {{- /* ---- BreadcrumbList ---- */ -}}
+  {{- $bcItems := slice (dict "@type" "ListItem" "position" 1 "name" "首页" "item" $siteURL) -}}
+  {{- if and .Section (ne .Section "") -}}
+    {{- $secName := .Section -}}
+    {{- range first 1 (where site.Data.columns "id" .Section) }}{{ $secName = .name }}{{ end -}}
+    {{- $bcItems = $bcItems | append (dict "@type" "ListItem" "position" 2 "name" $secName "item" (printf "%s/" .Section | absURL)) -}}
+  {{- end -}}
+  {{- $bcItems = $bcItems | append (dict "@type" "ListItem" "position" (add (len $bcItems) 1) "name" (.Title | plainify) "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict "@type" "BreadcrumbList" "@id" (printf "%s#breadcrumb" .Permalink) "itemListElement" $bcItems) -}}
+
+{{- else if .IsHome -}}
+
+  {{- $recent := first 12 (where site.RegularPages "Section" "not in" (slice "about" "resources" "templates")).ByDate.Reverse -}}
+  {{- $items := slice -}}
+  {{- range $i, $p := $recent -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" (add $i 1) "url" $p.Permalink "name" ($p.Title | plainify)) -}}
+  {{- end -}}
+  {{- if gt (len $items) 0 -}}
+    {{- $graph = $graph | append (dict "@type" "ItemList" "@id" (printf "%s#recent" $siteURL) "name" "最新文章" "itemListElement" $items) -}}
+  {{- end -}}
+
+{{- else -}}
+
+  {{- $title := .Title | plainify -}}
+  {{- $col := dict "@type" "CollectionPage" "@id" (printf "%s#collection" .Permalink) "url" .Permalink "name" $title "inLanguage" "zh-CN" "isPartOf" (dict "@id" (printf "%s#website" $siteURL)) -}}
+  {{- with .Description }}{{ $col = merge $col (dict "description" .) }}{{ end -}}
+  {{- $graph = $graph | append $col -}}
+  {{- $listItems := slice -}}
+  {{- range $i, $p := first 20 .Pages -}}
+    {{- $listItems = $listItems | append (dict "@type" "ListItem" "position" (add $i 1) "url" $p.Permalink "name" ($p.Title | plainify)) -}}
+  {{- end -}}
+  {{- if gt (len $listItems) 0 -}}
+    {{- $graph = $graph | append (dict "@type" "ItemList" "@id" (printf "%s#list" .Permalink) "itemListElement" $listItems) -}}
+  {{- end -}}
+  {{- $bcItems := slice (dict "@type" "ListItem" "position" 1 "name" "首页" "item" $siteURL) -}}
+  {{- $bcItems = $bcItems | append (dict "@type" "ListItem" "position" 2 "name" $title "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict "@type" "BreadcrumbList" "@id" (printf "%s#breadcrumb" .Permalink) "itemListElement" $bcItems) -}}
+
+{{- end -}}
+
+{{- $ld := dict "@context" "https://schema.org" "@graph" $graph -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" ($ld | jsonify (dict "noHTMLEscape" true)) | safeHTML }}

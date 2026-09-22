@@ -216,6 +216,15 @@ code, pre, kbd { font-family: var(--font-mono); }
 .term-head { border-bottom: 1px solid var(--line); margin-bottom: 8px; }
 .term-count { font-size: 0.9rem; font-weight: 700; color: var(--term-color, var(--primary)); margin: 4px 0 0; }
 
+/* ---------- 站群导航页 ---------- */
+.hub-card { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--col-color, var(--primary)); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+.hub-card__name { font-size: 1.12rem; margin: 0 0 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.hub-card__name a { color: var(--ink); }
+.hub-card__tag { font-size: 0.76rem; font-weight: 700; color: var(--primary-dark); background: var(--bg-alt); border-radius: 999px; padding: 3px 10px; }
+.hub-card__intro { color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 10px; }
+.hub-card__topics { color: var(--muted); font-size: 0.84rem; margin: 0 0 6px; }
+.hub-card__url { font-size: 0.84rem; margin: 0; }
+
 .term-grid { display: flex; flex-wrap: wrap; gap: 12px; }
 .term-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; font-weight: 600; color: var(--ink-soft); }
 .term-pill:hover { border-color: var(--primary); color: var(--primary-dark); text-decoration: none; }

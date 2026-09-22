@@ -1,0 +1,30 @@
+{{- /* RSS 输出：修正 Hugo 默认标题「首页 on 站名」，并补全每条的摘要、作者与分类，
+       让订阅者与搜索引擎/聚合器都能拿到完整上下文。 */ -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }}</title>
+    <link>{{ site.Home.Permalink }}</link>
+    <description>{{ site.Params.description }}</description>
+    <language>zh-cn</language>
+    <copyright>{{ site.Params.copyright }}</copyright>
+    <managingEditor>{{ site.Params.email }} ({{ site.Params.author }})</managingEditor>
+    <webMaster>{{ site.Params.email }} ({{ site.Params.author }})</webMaster>
+    <lastBuildDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    <atom:link href="{{ "index.xml" | absURL }}" rel="self" type="application/rss+xml"/>
+    {{- $pages := where site.RegularPages "Section" "not in" (slice "about" "resources" "templates" "hubs") }}
+    {{- range first 30 $pages.ByDate.Reverse }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <author>{{ site.Params.email }} ({{ .Params.author | default site.Params.author }})</author>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
+      <description>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}</description>
+      {{- range .Params.tags }}
+      <category>{{ . }}</category>
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>

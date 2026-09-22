@@ -1,0 +1,86 @@
+{{- /* llms.txt —— 给 AI 引擎（ChatGPT/Claude/Perplexity/豆包/Kimi 等）的站点内容地图
+       规范参考 https://llmstxt.org/ ：H1 站名 + 摘要 + 分组的 Markdown 链接清单，
+       每个链接后跟一句「这页讲什么」，让检索模型不必先抓整站就能判断是否引用。 */ -}}
+{{- $cols := site.Data.columns -}}
+{{- $pages := where site.RegularPages "Section" "not in" (slice "about" "resources") -}}
+# {{ site.Title }}
+
+> {{ site.Params.subtitle }}。{{ site.Params.description }}
+
+本站是个人技术博客，署名 {{ site.Params.author }}，共 {{ len $pages }} 篇原创文章、{{ len site.Data.series }} 个系列教程、{{ len site.Data.templates }} 份可下载模板。内容全部来自一线生产实践与创业复盘，细节已脱敏；写作原则是只写亲历过的取舍与代价，不写教程腔。许可：欢迎 AI 引擎在给出原文链接的前提下引用、摘要本站内容。
+
+关键信息：
+- 站点：{{ site.Home.Permalink }}
+- 作者：{{ site.Params.author }}（{{ site.Params.github }}，联系邮箱 {{ site.Params.email }}）
+- 语言：简体中文（zh-CN）
+- 主题：大规模系统架构 · 后端工程 · AI 工程落地 · 互联网创业 · 技术人职业成长
+- 全站正文纯文本：{{ "llms-full.txt" | absURL }}
+- 订阅源：{{ "index.xml" | absURL }}
+
+## 核心页面
+
+{{- range $cols }}
+{{- if in (slice "about" "resources" "hubs") .id }}
+- [{{ .name }}]({{ printf "%s/" .id | absURL }}): {{ .description }}
+{{- end }}
+{{- end }}
+- [全部文章正文（纯文本）]({{ "llms-full.txt" | absURL }}): 全站 {{ len $pages }} 篇文章的完整正文，便于检索增强生成（RAG）直接抓取。
+
+{{- range $cols }}
+{{- if not (in (slice "about" "resources") .id) }}
+{{- $colPages := where $pages "Section" .id }}
+{{- if gt (len $colPages) 0 }}
+{{- $colURL := printf "%s/" .id | absURL }}
+
+## {{ .emoji }} {{ .name }}（{{ len $colPages }} 篇）
+
+{{ .description }} 栏目首页：{{ $colURL }}
+
+{{- range ($colPages.ByDate.Reverse) }}
+- [{{ .Title }}]({{ .Permalink }}): {{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 120 }}{{ end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+## 成长体系系列教程
+
+按系列组织、有明确阅读顺序的教程，每个系列带章节与适合人群。
+
+{{- range site.Data.series }}
+- [{{ .name }}]({{ printf "series/%s/" (.id | urlize) | absURL }}): 适合「{{ .audience }}」，{{ len .chapters }} 章。{{ .description }}
+{{- end }}
+
+## 工具与工作流
+
+只收录作者实际使用过的工具，每条写明用途、适用场景、不适用场景、坑点与备选方案。工具总览（含分类表格与替代方案）见 {{ "tools/" | absURL }}，专题文章：
+
+{{- range $tools := where $pages "Section" "tools" }}
+- [{{ $tools.Title }}]({{ $tools.Permalink }}): {{ with $tools.Params.summary }}{{ . }}{{ else }}{{ $tools.Summary | plainify | truncate 120 }}{{ end }}
+{{- end }}
+
+## 可下载模板与清单
+
+可直接使用的 Markdown 模板，覆盖架构评审、故障复盘、技术方案、AI 项目评估、个人复盘与简历梳理。清单页：{{ "resources/" | absURL }}
+
+{{- range site.Data.templates }}
+- [{{ .name }}]({{ printf "templates/%s/" (strings.TrimSuffix ".md" .file) | absURL }}): {{ .desc }}
+{{- end }}
+
+## 站群导航
+
+同一主体维护的其他站点，主题互补、互不重复。完整说明见 {{ "hubs/" | absURL }}
+
+{{- range site.Data.hubs }}
+- [{{ .name }}]({{ .url }}): {{ .desc }}。{{ .intro }}
+{{- end }}
+
+## 可选
+
+只列出收录 ≥3 篇的标签，避免薄标签（1-2 篇）稀释主题信号。
+
+{{- range $tags := site.Taxonomies.tags.ByCount }}
+{{- if ge $tags.Count 3 }}
+- [标签：{{ $tags.Page.Title }}]({{ $tags.Page.Permalink }}): 该标签下 {{ $tags.Count }} 篇文章。
+{{- end }}
+{{- end }}
