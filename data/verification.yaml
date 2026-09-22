@@ -9,15 +9,15 @@
 #   2. 把控制台给的 token 原样粘贴到下面（覆盖当前的占位值）
 #   3. commit + push，回控制台点「验证」
 #
-# 也可以留空 —— 此时用上面两种文件方式验证：
-#   Google：static/googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html（已在仓库内）
+# 也可以留空 —— 此时用静态文件方式验证：
+#   Google：static/googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html（已作废，见下）
 #   Bing  ：static/BingSiteAuth.xml（已在仓库内）
-#   注意：Google 的「HTML 文件」方式，文件名里的 token 与文件内容必须一致，
-#        所以如果你用控制台给的文件名，请把该文件放进 static/ 覆盖即可。
+#   注意：Google 的「HTML 文件」方式，文件名里的 token 与文件内容必须一致。
 # =============================================================
 
 # Google Search Console —— <meta name="google-site-verification" content="...">
-googleSiteVerification: "UvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU"
+# 2026-09-22：已替换为控制台实际下发的 token（原生成的占位 token 已弃用）
+googleSiteVerification: "Xr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ"
 
 # Bing Webmaster Tools —— <meta name="msvalidate.01" content="...">
 bingSiteVerification: "051247122786982a081198be7b9a1708"
