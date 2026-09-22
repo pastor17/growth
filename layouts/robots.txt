@@ -135,4 +135,9 @@ Allow: /
 Disallow: /page/
 Disallow: /*.json$
 
+# ---------- 站长平台验证文件：必须可抓取，否则验证会失败 ----------
+Allow: /google*.html
+Allow: /BingSiteAuth.xml
+Allow: /baidu_verify_*.html
+
 Sitemap: {{ "sitemap.xml" | absURL }}

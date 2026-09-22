@@ -72,6 +72,22 @@
 <meta name="keywords" content="{{ .Title }}, 系统架构, 后端工程, AI 工程落地, 技术人成长">
 {{- end -}}
 
+{{- /* 站长平台归属验证（token 集中在 data/verification.yaml，改一处即生效）
+       仅生产环境输出：预览站带上验证标签没有意义，还可能被误判归属。 */ -}}
+{{- if hugo.IsProduction }}
+{{- with site.Data.verification }}
+{{- with .googleSiteVerification }}
+<meta name="google-site-verification" content="{{ . }}">
+{{- end }}
+{{- with .bingSiteVerification }}
+<meta name="msvalidate.01" content="{{ . }}">
+{{- end }}
+{{- with .baiduSiteVerification }}
+<meta name="baidu-site-verification" content="{{ . }}">
+{{- end }}
+{{- end }}
+{{- end }}
+
 {{- partial "structured-data.html" . -}}
 
 {{- $css := resources.Get "css/main.css" -}}

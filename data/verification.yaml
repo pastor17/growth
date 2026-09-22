@@ -1,0 +1,26 @@
+# =============================================================
+# 站长平台验证 token
+# 用途：Hugo 会把下面的 token 输出成 <meta> 验证标签，
+#       这样不必依赖静态文件，改完 push 即可通过验证。
+#
+# 使用步骤：
+#   1. 在 Google Search Console / Bing Webmaster Tools 添加资源，
+#      选「HTML 标记」或「Meta 标记」方式，控制台会给你一串 token
+#   2. 把控制台给的 token 原样粘贴到下面（覆盖当前的占位值）
+#   3. commit + push，回控制台点「验证」
+#
+# 也可以留空 —— 此时用上面两种文件方式验证：
+#   Google：static/googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html（已在仓库内）
+#   Bing  ：static/BingSiteAuth.xml（已在仓库内）
+#   注意：Google 的「HTML 文件」方式，文件名里的 token 与文件内容必须一致，
+#        所以如果你用控制台给的文件名，请把该文件放进 static/ 覆盖即可。
+# =============================================================
+
+# Google Search Console —— <meta name="google-site-verification" content="...">
+googleSiteVerification: "UvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU"
+
+# Bing Webmaster Tools —— <meta name="msvalidate.01" content="...">
+bingSiteVerification: "051247122786982a081198be7b9a1708"
+
+# 百度搜索资源平台 —— <meta name="baidu-site-verification" content="...">
+baiduSiteVerification: ""
