@@ -9,6 +9,10 @@
 #   ./scripts/indexnow-submit.sh <url> [...]  # 只提交指定 URL（改完文章后最常用）
 #
 # 前置：密钥文件已随站点部署（static/<key>.txt），无需其他配置。
+# ⚠️ 密钥文件的坑（实测踩过）：内容必须与密钥「逐字节相等」，不能有尾部换行。
+#    用 `echo "$KEY" > file` 会多一个 \n（33 字节），IndexNow 校验返回 403。
+#    正确写法：printf '%s' "$KEY" > file   （32 字节）
+#    校验：curl -s https://<host>/<key>.txt | od -c | tail -2
 # =============================================================
 set -euo pipefail
 

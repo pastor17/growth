@@ -7,6 +7,33 @@
 
 ---
 
+## 部署状态（2026-09-22）
+
+技术改造已 commit 并 push 到 `growth` 分支，GitHub Actions 部署完成，**线上已全部生效并验证**：
+
+| 检查项 | 结果 |
+|---|---|
+| `/llms.txt` | ✅ HTTP 200 · 34,506 bytes |
+| `/llms-full.txt` | ✅ HTTP 200 · 290,644 bytes |
+| `/robots.txt` | ✅ HTTP 200 · 38 个 UA 分组（含全部 AI 爬虫） |
+| `/sitemap.xml` | ✅ HTTP 200 · 233 个 URL |
+| `/index.xml`（RSS） | ✅ HTTP 200 · 81 篇 |
+| `/hubs/` | ✅ HTTP 200 · 5 个子域站点 |
+| IndexNow 密钥 | ✅ HTTP 200 · 32 bytes |
+| 文章页 JSON-LD | ✅ 5 个实体（WebSite/Organization/Person/BlogPosting/BreadcrumbList）解析通过 |
+| `meta robots` | ✅ `max-snippet:-1, max-image-preview:large, max-video-preview:-1` |
+| 相关阅读内链 | ✅ 已按共现标签加权（缓存雪崩 → 缓存体系设计 + 线上稳定性建设） |
+| `rel="related"` | ✅ 6 条（5 子域 + /hubs/） |
+| **IndexNow 提交** | ✅ **233 个 URL 全部提交成功（HTTP 200）** |
+
+> ⚠️ **一个实测踩到的坑**：IndexNow 密钥文件内容必须与密钥**逐字节相等**。
+> 用 `echo "$KEY" > file` 会多一个尾部换行（33 字节），校验直接返回 **403**。
+> 必须用 `printf '%s' "$KEY" > file`（32 字节）。已在脚本注释中标注。
+
+上面 P0 清单里**第 2 项（IndexNow 提交）已完成**。剩余需你手动完成的只有各站长平台的账号验证。
+
+---
+
 ## 一、先说清楚：AI 搜索的引用链路是怎么走的
 
 优化前必须知道钱花在哪一环。AI 回答里出现你的链接，要同时满足三个条件：
@@ -119,7 +146,7 @@
 | # | 动作 | 具体操作 |
 |---|---|---|
 | 1 | **Bing Webmaster Tools** | <https://www.bing.com/webmasters> → 添加站点 `irudder.me` → 验证（推荐 DNS TXT 或导入 GSC）→ 提交 `https://irudder.me/sitemap.xml`。**优先级最高，因为直接喂 ChatGPT Search 的索引** |
-| 2 | **IndexNow 立即生效** | 部署完成后运行 `./scripts/indexnow-submit.sh`，全量推送 81 篇文章 |
+| 2 | ~~IndexNow 立即生效~~ | ✅ **已完成**：233 个 URL 已通过 `scripts/indexnow-submit.sh` 提交成功。后续改完文章用精准提交即可 |
 | 3 | **百度搜索资源平台** | <https://ziyuan.baidu.com> → 验证站点 → 提交 sitemap → 申请**普通收录 API**，拿到 token 后可做主动推送（速度快于 sitemap 轮询） |
 | 4 | **Google Search Console** | 添加资源 → 验证 → 提交 sitemap → 用「网址检查」逐条请求编入索引（前 10 篇优先） |
 
