@@ -2,7 +2,7 @@
 
 > 适用站点：`https://irudder.me`（架构 · 创业 · 成长）
 > 验证资产已全部部署并线上验证通过，你只需在控制台点几下。
-> 生成日期：2026-09-22
+> 生成日期：2026-09-22（已验证资产上线）
 
 ---
 
@@ -14,7 +14,7 @@
 
 | 平台 | 标签 | 当前值 |
 |---|---|---|
-| Google Search Console | `google-site-verification` | `UvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU` |
+| Google Search Console | `google-site-verification` | `Xr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ` |
 | Bing Webmaster Tools | `msvalidate.01` | `051247122786982a081198be7b9a1708` |
 | 百度搜索资源平台 | `baidu-site-verification` | 未配置（拿到 token 后填入） |
 
@@ -22,7 +22,7 @@
 
 ```
 $ curl -s https://irudder.me/ | grep -o 'name=google-site-verification content="[^"]*"'
-name=google-site-verification content="UvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU"
+name=google-site-verification content="Xr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ"
 
 $ curl -s https://irudder.me/ | grep -o 'name=msvalidate.01 content="[^"]*"'
 name=msvalidate.01 content="051247122786982a081198be7b9a1708"
@@ -32,13 +32,13 @@ name=msvalidate.01 content="051247122786982a081198be7b9a1708"
 
 | 平台 | 文件 | 线上地址 | 实测 |
 |---|---|---|---|
-| Google | `googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html` | `/googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html` | HTTP 200 |
+| Google | `googleXr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ.html` | `/googleXr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ.html` | HTTP 200 |
 | Bing | `BingSiteAuth.xml` | `/BingSiteAuth.xml` | HTTP 200 |
 
 文件内容分别是：
 
 ```
-google-site-verification: googleUvsZpf8ueAzAwNKekqHeI-IIyjeEbCa-0bU4pB6CstU.html
+google-site-verification: googleXr4fuou8t_SsEyTF7YBsg2Qj3xu11M4wa34pEo4vhbQ.html
 ```
 
 ```xml
