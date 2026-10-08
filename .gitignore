@@ -16,3 +16,6 @@ node_modules/
 
 # 本地部署脚本生成物
 .deploy/
+
+# macOS 文本剪辑
+*.textClipping
